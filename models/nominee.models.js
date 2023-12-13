@@ -3,14 +3,17 @@ const mongoose = require('mongoose');
 const nomineeSchema = new mongoose.Schema({
 
     
-    customer_ref: {
-        type: String
-    },
     name: {
         type: String,
         required: true
     },
+    usercustomerRefNo: String,
     phone: {
+        type: String,
+        required: true
+
+    },
+    dob: {
         type: String,
         required: true
 
@@ -42,6 +45,7 @@ const nomineeSchema = new mongoose.Schema({
         type: Date,
         default: null
     }
+    
 
 }, {timestamps: true})
 

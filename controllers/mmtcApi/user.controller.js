@@ -110,7 +110,8 @@ class userMMtc {
   static updateProfile = async (req, res) => {
 
     const session = await securityMmtc.login(req, res);
-    const payload = req.body;
+    const payload = req;
+    console.log("payload", payload)
     try {
 
       const headers = {
@@ -126,7 +127,6 @@ class userMMtc {
       return response.data;
     }
     catch (error) {
-      
       console.log(error.response.data);
       throw new Error(JSON.stringify(error.response.data));
 

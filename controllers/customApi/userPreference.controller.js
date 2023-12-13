@@ -1,21 +1,26 @@
 // preferenceController.js
 
-//const connection = require('../../connection');
+// Importing the Preference model and mongoose
 const Preference = require('../../models/preference.models.js');
 
 const mongoose=require('mongoose');
 
-
+// Creating a class for the preferenceController
 class preferenceController {                                                               
   constructor() {
-    this.customer_ref = "";
+    // Initializing customer_ref property
+    //this.customer_ref = "";
   }
 
   
 
-  // ADD PREFERENCE
+  
+  // Method to add preference
   async addPreference(req, res) {
-  const customer_ref= req.user._id
+    // Extracting user ID from the request object
+  const usercustomerRefNo= req.user._id;
+  
+    // Destructuring request body for various preference fields
     const {
   
       incomeRange,
@@ -32,11 +37,13 @@ class preferenceController {
       dontLike,
       feedback
     } = req.body;
+
     
+    // Initializing error string
     let errors = "";
 
     // Check each field and accumulate error messages
-    if (!customer_ref) {
+    if (!usercustomerRefNo ){
       errors += "Please enter your customer_ref. ";
     }
 
@@ -107,8 +114,9 @@ class preferenceController {
 
 
     try {
+       // Creating a new preference record using the Preference model
       const response = await Preference.create({
-        customer_ref,
+        usercustomerRefNo,
         incomeRange,
         occupation,
         MartialStatus,
@@ -123,7 +131,9 @@ class preferenceController {
         dontLike,
         feedback
       });
-console.log(response);
+      // Logging the response from the database
+   console.log(response);
+      // Returning a success response
 
       return res.status(200).json({
         error: false,
@@ -131,6 +141,7 @@ console.log(response);
         data: [response]
       });
     } catch (err) {
+       // Handling any errors that may occur during the database operation
       console.error(err);
       return res.status(500).json({
         error: true,
@@ -140,92 +151,132 @@ console.log(response);
     }
   }
   
-  // UPDATE PREFERENCE
-async updatePreference(req, res) {
-  const data = req.body;
-  const { customer_ref } = req.body;
+  //UPDATE PREFERENCE
+  // async updatePreference(req, res) {
+  //   const data = req.body; // Extracting the data from the request body
+  //   console.log(data); // Logging the received data
+  
+  //   const customer_ref = req.user._id; // Extracting the customer reference ID from the request user object
+  //   console.log(customer_ref); // Logging the customer reference ID
+  
+  //   try {
+  //     if (!customer_ref) { // Checking if customer_ref is missing
+  //       return res.status(400).json({
+  //         error: true,
+  //         message: "Please provide customer_ref",
+  //         data: null
+  //       });
+  //     }
+  
+  //     // Finding and updating a preference based on the customer reference ID
+  //     const updatedPreference = await Preference.findOneAndUpdate(
+  //       { "usercustomerRefNo": customer_ref }, // Query to find the preference by customer reference
+  //       data, // New data to update the preference with
+  //       { new: true } // To return the updated preference
+  //     );
+  //     console.log(updatedPreference); // Logging the updated preference
+  
+  //     if (!updatedPreference) { // Checking if preference update failed
+  //       return res.status(400).json({
+  //         error: true,
+  //         message: "Failed to update!!",
+  //         data: null
+  //       });
+  //     }
+      
+  //     // Sending a success response with the updated preference data
+  //     return res.status(200).json({
+  //       error: false,
+  //       message: "Updated Successfully",
+  //       data: [updatedPreference]
+  //     });
+  //   } catch (err) {
+  //     // Handling any caught errors and sending an error response
+  //     console.error(err);
+  //     return res.status(500).json({
+  //       error: true,
+  //       message: "Internal server error",
+  //       data: []
+  //     });
+  //   }
+  // }
+
+  async updatePreference(req, res) {
+    try {
+      const data = req.body; // Extracting request body data
+      // this.customer_ref = req.user._doc._id; // Storing customer reference ID (not used in the provided code)
+  
+      // Finding and updating the nominee based on the customer reference
+      const updatePreference = await Preference.findOneAndUpdate(
+        { customer_ref: this.customer_ref }, // Query to find the nominee by customer reference
+        data, // Data to update the nominee with
+        { new: true } // To return the updated nominee
+      );
+  
+      console.log(updatePreference); // Logging the updated nominee
+  
+      if (!updatePreference) {
+        // If no nominee is found for the provided customer reference
+        return res.status(404).json({
+          error: true,
+          message: "Preference not found",
+          data: null,
+        });
+      }
+  
+      // Sending a success response with the updated nominee data
+      return res.status(200).json({
+        error: false,
+        message: "Preference updated successfully",
+        data: [updatePreference],
+      });
+    } catch (err) {
+      // Handling any caught errors and sending an error response
+      console.error(err);
+      return res.status(500).json({
+        error: true,
+        message: "Internal server error",
+        data: [],
+      });
+    }
+  }
+  
+  
+
+//listPreference
+async listPreference(req, res) {
+  const customerRefNo = req.user._id;
+
+  console.log(customerRefNo);
 
   try {
-    if (!customer_ref) {
-      return res.status(400).json({
+    // Find the user by their ID
+    const user = await Preference.findOne({ "usercustomerRefNo": customerRefNo });
+    console.log(user);
+
+    if (user) {
+      return res.json({
+        error: false,
+        message: 'Preference found successfully',
+        data: user
+      });
+    } else {
+      return res.status(404).json({
         error: true,
-        message: "Please provide customer_ref",
+        message: 'Preference not found',
         data: null
       });
     }
-
-    const updatedPreference = await Preference.findOneAndUpdate(
-      { customer_ref },
-      data,
-      { new: true }
-    );
-     console.log(updatedPreference)
-
-    if (!updatedPreference) {
-      return res.status(400).json({
-        error: true,
-        message: "Failed to update!!",
-        data: null
-      });
-    }
-    
-    return res.status(200).json({
-      error: false,
-      message: "Updated Successfully",
-      data: [updatedPreference]
-    });
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    console.error('Error:', error); // Log the error for debugging
     return res.status(500).json({
       error: true,
-      message: "Internal server error",
-      data: []
+      message: 'Internal server error',
+      data: null
     });
   }
 }
 
-  // LIST PREFERENCE
-  async listPreference(req, res) {
-  
-  const userId = req.params.id;
-  
-    try {
-      // Check if userId is a valid ObjectId before attempting to query the database
-      if (!mongoose.Types.ObjectId.isValid(userId)) {
-        return res.status(400).json({
-
-
-          error: true,
-          message: 'Invalid user ID format',
-          data: [null],
-        });
-      }
-  
-      // Find the user by their ID
-      const user = await Preference.findById(userId);
-  
-      if (user) {
-        return res.json({
-          error: false,
-          message: 'User found successfully',
-          data: [user],
-        });
-      } else {
-        return res.status(404).json({
-          error: true,
-          message: 'User not found',
-          data: [null],
-        });
-      }
-    } catch (error) {
-      console.error('Error:', error); // Log the error for debugging
-      return res.status(500).json({
-        error: true,
-        message: 'Internal server error',
-        data: null,
-      });
-    }
-}
 }
 
 module.exports = preferenceController;

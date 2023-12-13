@@ -18,7 +18,10 @@ const stateSchema = new mongoose.Schema({
         type: Number,
         default: 1
 
-    }
+    },
+    state_code: Number // 2digit
+    ,
+    iso_code: "String" //2 alphabet
 })
 
 

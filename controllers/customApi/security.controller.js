@@ -1,6 +1,6 @@
 //const connection = require("../../connection"); // mongoose connection
 const userModel = require("../../models/user.models.js");
-const { createToken } = require('../../service/jwtAuth.js');
+const { createToken } = require('../../utils/jwtAuth.js');
 // const { createProfile } = require("../mmtcApi/user.controller.js");
 //const { reqUser } = require("../../middlewares/authMiddleware");
 const validator = require('validator');
@@ -114,6 +114,8 @@ class UserController {
 
 
 
+      /*
+      
       // to calculate age
       if (dob) {
         let dobParts = dob.split("-");
@@ -130,6 +132,9 @@ class UserController {
           });
         }
       }
+
+      */
+
 
 
 
@@ -223,7 +228,7 @@ class UserController {
       if (!user) {
         return res.status(400).json({
           error: true,
-          message: "user not found" ,
+          message: "User not found!, Please Register" ,
           data: []
         });
       }

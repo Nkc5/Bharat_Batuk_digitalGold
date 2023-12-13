@@ -20,7 +20,11 @@ const citySchema = new mongoose.Schema({
     status: {
         type: Number,
         default: 1
-    }
+    },
+    district_name: String,
+    
+    distric_code: Number
+
 })
 
 

@@ -10,21 +10,6 @@ const addressModel = require('../../models/address.models.js');
 const billAddressModel = require('../../models/billAddress.models.js');
 const userMMtc = require('../mmtcApi/user.controller.js')
 
-// let transferId
-// let dstCustomerRefNo, dstMobileNumber, email, name, srcCustomerRefNo, isKycRequired, channel;
-// let orderId;
-// let clientOrderID;
-// let customerRefNo, endDate, startDate;
-// let transactionRefNo = uuidv4();
-// let billingAddressId;
-// let transactionId;
-// let currencyPair, value, type;
-// let calculationType, transactionOrderID, transactionDate;
-// let totalAmount, quantity, quoteValidityTime, taxType, tax1Amt, tax2Amt, tax3Amt, tax1Perc, tax2Perc,
-//     preTaxAmount, taxAmount, quoteId, createdAt;
-// let userProfile;
-
-
 
 
 
@@ -75,7 +60,8 @@ class tradeBuyController {
     static buy = async (req, res) => {
 
         // access customerRefNo from req.user
-        const customerRefNo = req.user._id;
+        const customerRefNo = req.user._id.toString();
+
         this.transactionRefNo = uuidv4();
 
         // access currencyPair, value, type from body
@@ -194,9 +180,9 @@ class tradeBuyController {
         catch (error) {
             console.log(error)
 
-            error = JSON.parse(error.message);
-            const errorReason = error.reason;
-            const errorCode = error.code;
+            const errorMessage = JSON.parse(error.message);
+            const errorReason = errorMessage.reason;
+            const errorCode = errorMessage.code;
 
             return res.json({
                 "error": true,
@@ -217,7 +203,8 @@ class tradeBuyController {
         this.transactionOrderID = this.transactionRefNo;
         this.calculationType = this.type;
 
-        const customerRefNo = req.user._id;
+        const customerRefNo = req.user._id.toString();
+
 
         const data = {
             customerRefNo,
@@ -252,9 +239,9 @@ class tradeBuyController {
         catch (error) {
             console.log(error)
 
-            error = JSON.parse(error.message);
-            const errorReason = error.reason;
-            const errorCode = error.code;
+            const errorMessage = JSON.parse(error.message);
+            const errorReason = errorMessage.reason;
+            const errorCode = errorMessage.code;
 
             return res.json({
                 "error": true,
@@ -274,7 +261,7 @@ class tradeBuyController {
     //executeBuy
     static executeBuy = async (req, res) => {
 
-        const customerRefNo = req.user._id;
+        const customerRefNo = req.user._id.toString();
         //    console.log("customerRefNo", customerRefNo)
         const billingAddressUser = await billAddressModel.findOne({ "usercustomerRefNo": customerRefNo })
 
@@ -301,11 +288,17 @@ class tradeBuyController {
             });
 
         }
-        catch (err) {
+        catch (error) {
+            console.log(error)
+            const errorMessage = JSON.parse(error.message);
+            const errorReason = errorMessage.reason;
+            const errorCode = errorMessage.code;
+
             return res.json({
                 "error": true,
-                "message": err,
-                "data": null
+                "message": errorReason,
+                "data": null,
+                "code": errorCode
             })
         }
     }
@@ -314,7 +307,8 @@ class tradeBuyController {
 
     //getOrderHistory
     static getOrderHistory = async (req, res) => {
-        const customerRefNo = req.user._id;
+        const customerRefNo = req.user._id.toString();
+
 
         const { endDate, startDate } = req.body;
         const data = { ...req.body, customerRefNo };
@@ -322,31 +316,6 @@ class tradeBuyController {
 
         /* isEmpty & isString validation  */
 
-        if (validator.isEmpty(customerRefNo)) {
-
-            return res.json({
-                "error": true,
-                "message": "CustomerRefNo must not be empty",
-                "data": null
-            })
-        }
-        if (validator.isEmpty(endDate)) {
-
-            return res.json({
-                "error": true,
-                "message": "End date should not be empty",
-                "data": null
-            })
-        }
-
-        if (validator.isEmpty(startDate)) {
-
-            return res.json({
-                "error": true,
-                "message": "Start date should not be empty",
-                "data": null
-            })
-        }
 
         if (typeof endDate !== 'string') {
 
@@ -375,6 +344,34 @@ class tradeBuyController {
         }
 
 
+        if (validator.isEmpty(customerRefNo)) {
+
+            return res.json({
+                "error": true,
+                "message": "CustomerRefNo must not be empty",
+                "data": null
+            })
+        }
+        if (validator.isEmpty(endDate)) {
+
+            return res.json({
+                "error": true,
+                "message": "End date should not be empty",
+                "data": null
+            })
+        }
+
+        if (validator.isEmpty(startDate)) {
+
+            return res.json({
+                "error": true,
+                "message": "Start date should not be empty",
+                "data": null
+            })
+        }
+
+
+
         console.log(data);
 
         // mmtc getOrderHistory call
@@ -386,12 +383,18 @@ class tradeBuyController {
                 "message": "success",
                 "data": [response]
             });
-        } catch (err) {
-            return res.status(500).json({
+        } catch (error) {
+            console.log(error)
+            const errorMessage = JSON.parse(error.message);
+            const errorReason = errorMessage.reason;
+            const errorCode = errorMessage.code;
+
+            return res.json({
                 "error": true,
-                "message": err.message,
-                "data": null
-            });
+                "message": errorReason,
+                "data": null,
+                "code": errorCode
+            })
         }
     }
 
@@ -400,7 +403,8 @@ class tradeBuyController {
     static getRedeemHistory = async (req, res) => {
         try {
 
-            const customerRefNo = req.user._id;
+            const customerRefNo = req.user._id.toString();
+
 
             const { endDate, startDate } = req.body;
 
@@ -474,12 +478,18 @@ class tradeBuyController {
                 "message": "success",
                 "data": [response]
             });
-        } catch (err) {
-            return res.status(500).json({
+        } catch (error) {
+            console.log(error)
+            const errorMessage = JSON.parse(error.message);
+            const errorReason = errorMessage.reason;
+            const errorCode = errorMessage.code;
+
+            return res.json({
                 "error": true,
-                "message": err.message,
-                "data": null
-            });
+                "message": errorReason,
+                "data": null,
+                "code": errorCode
+            })
         }
     }
 
@@ -494,24 +504,7 @@ class tradeBuyController {
 
         /* isEmpty & isString validation  */
 
-        if (validator.isEmpty(transactionId)) {
-
-            return res.json({
-                "error": true,
-                "message": "TransactionId must not be empty",
-                "data": null
-            })
-        }
-
-        if (validator.isEmpty(type)) {
-
-            return res.json({
-                "error": true,
-                "message": "Type should not be empty",
-                "data": null
-            })
-        }
-
+        
         if (typeof transactionId !== 'string') {
 
             return res.json({
@@ -531,6 +524,25 @@ class tradeBuyController {
         }
 
 
+
+        if (validator.isEmpty(transactionId)) {
+
+            return res.json({
+                "error": true,
+                "message": "TransactionId must not be empty",
+                "data": null
+            })
+        }
+
+        if (validator.isEmpty(type)) {
+
+            return res.json({
+                "error": true,
+                "message": "Type should not be empty",
+                "data": null
+            })
+        }
+
         console.log(data);
 
 
@@ -545,12 +557,18 @@ class tradeBuyController {
                 "message": "Success",
                 "data": [response]
             });
-        } catch (err) {
-            return res.status(500).json({
+        } catch (error) {
+            console.log(error)
+            const errorMessage = JSON.parse(error.message);
+            const errorReason = errorMessage.reason;
+            const errorCode = errorMessage.code;
+
+            return res.json({
                 "error": true,
-                "message": err.message,
-                "data": null
-            });
+                "message": errorReason,
+                "data": null,
+                "code": errorCode
+            })
         }
     }
 
@@ -562,8 +580,17 @@ class tradeBuyController {
 
 
 
+        /* isEmpty & isString validation  */
+        
+        if (typeof orderId !== 'string') {
 
-        // 
+            return res.status(500).json({
+                "error": true,
+                "message": "orderId should be in string",
+                "data": null
+            });
+        }
+
         if (validator.isEmpty(orderId)) {
 
             return res.status(500).json({
@@ -573,14 +600,6 @@ class tradeBuyController {
             });
         }
 
-        if (typeof orderId !== 'string') {
-
-            return res.status(500).json({
-                "error": true,
-                "message": "orderId should be in string",
-                "data": null
-            });
-        }
 
         // let data = req.body;
 
@@ -600,12 +619,18 @@ class tradeBuyController {
                 "message": "success",
                 "data": [response]
             });
-        } catch (err) {
-            return res.status(500).json({
+        } catch (error) {
+            console.log(error)
+            const errorMessage = JSON.parse(error.message);
+            const errorReason = errorMessage.reason;
+            const errorCode = errorMessage.code;
+
+            return res.json({
                 "error": true,
-                "message": err.message,
-                "data": [null]
-            });
+                "message": errorReason,
+                "data": null,
+                "code": errorCode
+            })
         }
     }
     //checkTradeStatus
@@ -618,21 +643,44 @@ class tradeBuyController {
         const { clientOrderID } = req.body;
         const data = { ...req.body, customerRefNo };
 
-        if (validator.isEmpty(clientOrderID)) {
-            return res.status(400).json({ message: "ClientOrderId must not be empty" });
-        }
 
-        if (validator.isEmpty(customerRefNo)) {
-            return res.status(400).json({ message: "customerRefNo should not be empty" });
-        }
+        /* isEmpty & isString validation  */
 
         if (typeof customerRefNo !== 'string') {
-            return res.status(400).json({ message: "customerRefNo should be in string" });
+            return res.status(500).json({
+                "error": true,
+                "message": "customerRefNo should be in string",
+                "data": null
+            });
         }
 
         if (typeof clientOrderID !== 'string') {
-            return res.status(400).json({ message: "CustomerRefNo must not be in string" });
+            return res.status(500).json({
+                "error": true,
+                "message": "clientOrderId must not be in string",
+                "data": null
+            });
         }
+       
+        if (validator.isEmpty(clientOrderID)) {
+          
+            return res.status(500).json({
+                "error": true,
+                "message": "ClientOrderId must not be empty",
+                "data": null
+        });
+        }
+
+        if (validator.isEmpty(customerRefNo)) {
+            
+            return res.status(500).json({
+                "error": true,
+                "message": "customerRefNo should not be empty",
+                "data": null
+            });
+        }
+
+       
 
         // let data = req.body;
 
@@ -650,12 +698,18 @@ class tradeBuyController {
                 "message": "success",
                 "data": [response]
             });
-        } catch (err) {
-            return res.status(500).json({
+        } catch (error) {
+            console.log(error)
+            const errorMessage = JSON.parse(error.message);
+            const errorReason = errorMessage.reason;
+            const errorCode = errorMessage.code;
+
+            return res.json({
                 "error": true,
-                "message": err.message,
-                "data": [null]
-            });
+                "message": errorReason,
+                "data": null,
+                "code": errorCode
+            })
         }
     }
 
@@ -670,81 +724,178 @@ class tradeBuyController {
 
         const data = { ...req.body, srcCustomerRefNo }
 
-        if (validator.isEmpty(dstCustomerRefNo)) {
-            return res.status(400).json({ message: "dstCustomerRefNo must not be empty" });
-        }
+      
 
-        if (validator.isEmpty(dstMobileNumber)) {
-            return res.status(400).json({ message: "dstMobileNumber should not be empty" });
-        }
+          
+        /* isEmpty & isString validation  */
 
-        if (!validator.isEmail(email)) {
-            return res.status(400).json({ message: "Invalid email address" });
-        }
-
-        if (validator.isEmpty(name)) {
-            return res.status(400).json({ message: "Name should not be empty" });
-        }
-
-        if (validator.isEmpty(srcCustomerRefNo)) {
-            return res.status(400).json({ message: "srcCustomerRefNo should not be empty" });
-        }
-
-        if (validator.isEmpty(isKycRequired)) {
-            return res.status(400).json({ message: "kyc  should not be empty" });
-        }
-
-        if (validator.isEmpty(transactionDate)) {
-            return res.status(400).json({ message: "transactionDate should not be empty" });
-        }
-        if (validator.isEmpty(transactionOrderID)) {
-            return res.status(400).json({ message: "transactionOrderID should not be empty" });
-        }
-        if (validator.isEmpty(channel)) {
-            return res.status(400).json({ message: "End date should not be empty" });
-        }
-        if (validator.isEmpty(quantity)) {
-            return res.status(400).json({ message: "channel should not be empty" });
-        }
-        if (validator.isEmpty(currencyPair)) {
-            return res.status(400).json({ message: "currencyPair should not be empty" });
-        }
-
+        
         if (typeof dstCustomerRefNo !== 'string') {
-            return res.status(400).json({ message: "End date should be in string" });
+            return res.status(500).json({
+                "error": true,
+                "message": "dstCustomerRefNo should be in string",
+                "data": null
+            });
         }
 
         if (typeof dstMobileNumber !== 'string') {
-            return res.status(400).json({ message: "dstCustomerRefNo should be in string" });
+            return res.status(500).json({
+                "error": true,
+                "message": "dstMobileNumber should be in string",
+                "data": null
+            });
         }
 
         if (typeof email !== 'string') {
-            return res.status(400).json({ message: "email should be in string" });
+            return res.status(500).json({
+                "error": true,
+                "message": "email should be in string",
+                "data": null
+            });
         }
         if (typeof name !== 'string') {
-            return res.status(400).json({ message: "name should be in string" });
+            return res.status(500).json({
+                "error": true,
+                "message": "name should be in string",
+                "data": null
+            });
         }
         if (typeof srcCustomerRefNo !== 'string') {
-            return res.status(400).json({ message: "srcCustomerRefNo should be in string" });
+            return res.status(500).json({
+                "error": true,
+                "message": "srcCustomerRefNo should be in string",
+                "data": null
+            });
         }
         if (typeof isKycRequired !== 'string') {
-            return res.status(400).json({ message: "isKycRequired should be in string" });
+            return res.status(500).json({
+                "error": true,
+                "message": "isKycRequired should be in string",
+                "data": null
+            });
         }
         if (typeof transactionDate !== 'string') {
-            return res.status(400).json({ message: "transactionDate should be in string" });
+            return res.status(500).json({
+                "error": true,
+                "message": "transactionDate should be in string",
+                "data": null
+            });
         }
         if (typeof transactionOrderID !== 'string') {
-            return res.status(400).json({ message: "transactionOrderID should be in string" });
+            return res.status(500).json({
+                "error": true,
+                "message": "transactionOrderID should be in string",
+                "data": null
+            });
         }
         if (typeof channel !== 'string') {
-            return res.status(400).json({ message: "channel should be in string" });
+            return res.status(500).json({
+                "error": true,
+                "message": "channel should be in string",
+                "data": null
+            });
         }
         if (typeof quantity !== 'string') {
-            return res.status(400).json({ message: "  quantity should be in string" });
+            return res.status(500).json({
+                "error": true,
+                "message": "quantity should be in string",
+                "data": null
+            });
         }
         if (typeof currencyPair !== 'string') {
-            return res.status(400).json({ message: "currencyPair should be in string" });
+            return res.status(500).json({
+                "error": true,
+                "message": "currencyPair should be in string",
+                "data": null
+            });
         }
+
+
+
+        if (validator.isEmpty(dstCustomerRefNo)) {
+            return res.status(500).json({
+                "error": true,
+                "message": "dstCustomerRefNo must not be empty",
+                "data": null
+            });
+        }
+
+        if (validator.isEmpty(dstMobileNumber)) {
+            return res.status(500).json({
+                "error": true,
+                "message": "dstMobileNumber should not be empty",
+                "data": null
+            });
+        }
+
+        if (!validator.isEmail(email)) {
+            return res.status(500).json({
+                "error": true,
+                "message": "Invalid email address",
+                "data": null
+            });
+        }
+
+        if (validator.isEmpty(name)) {
+            return res.status(500).json({
+                "error": true,
+                "message": "name should not be empty",
+                "data": null
+            });
+        }
+
+        if (validator.isEmpty(srcCustomerRefNo)) {
+            return res.status(500).json({
+                "error": true,
+                "message": "srcCustomerRefNo should not be empty",
+                "data": null
+            });
+        }
+
+        if (validator.isEmpty(isKycRequired)) {
+            return res.status(500).json({
+                "error": true,
+                "message": "kyc  should not be empty",
+                "data": null
+            });
+        }
+
+        if (validator.isEmpty(transactionDate)) {
+            return res.status(500).json({
+                "error": true,
+                "message": "transactionDate should not be empty",
+                "data": null
+            });
+        }
+        if (validator.isEmpty(transactionOrderID)) {
+            return res.status(500).json({
+                "error": true,
+                "message": "transactionOrderID should not be empty",
+                "data": null
+            });
+        }
+        if (validator.isEmpty(channel)) {
+            return res.status(500).json({
+                "error": true,
+                "message": "channel should not be empty",
+                "data": null
+            });
+        }
+        if (validator.isEmpty(quantity)) {
+            return res.status(500).json({
+                "error": true,
+                "message": "quantity should not be empty",
+                "data": null
+            });
+        }
+        if (validator.isEmpty(currencyPair)) {
+            return res.status(500).json({
+                "error": true,
+                "message": "currencyPair should not be empty",
+                "data": null
+            });
+        }
+
 
         console.log(data);
         try {
@@ -755,12 +906,18 @@ class tradeBuyController {
                 "message": "success",
                 "data": [response]
             });
-        } catch (err) {
-            return res.status(500).json({
+        } catch (error) {
+            console.log(error)
+            const errorMessage = JSON.parse(error.message);
+            const errorReason = errorMessage.reason;
+            const errorCode = errorMessage.code;
+
+            return res.json({
                 "error": true,
-                "message": err.message,
-                "data": [null]
-            });
+                "message": errorReason,
+                "data": null,
+                "code": errorCode
+            })
         }
     }
 
@@ -768,35 +925,78 @@ class tradeBuyController {
     static confirmTransfer = async (req, res) => {
         const data = { transferId, dstCustomerRefNo, currencyPair, transactionDate } = req.body;
         console.log(req)
-        if (validator.isEmpty(transferId)) {
-            return res.status(400).json({ message: "transferId must not be empty" });
-        }
+       
+       
+         /* isEmpty & isString validation  */
 
-        if (validator.isEmpty(dstCustomerRefNo)) {
-            return res.status(400).json({ message: "dstCustomerRefNo should not be empty" });
-        }
-        if (validator.isEmpty(transactionDate)) {
-            return res.status(400).json({ message: "transactionDate should not be empty" });
-        }
-        if (validator.isEmpty(currencyPair)) {
-            return res.status(400).json({ message: "currencyPair should not be empty" });
-        }
 
+         
         if (typeof dstCustomerRefNo !== 'string') {
-            return res.status(400).json({ message: "dstCustomerRefNo should be in string" });
+            return res.status(500).json({
+                "error": true,
+                "message": "dstCustomerRefNo should be in string",
+                "data": null
+            });
         }
 
         if (typeof transferId !== 'string') {
-            return res.status(400).json({ message: "transferId should be in string" });
+            return res.status(500).json({
+                "error": true,
+                "message": "transferId should be in string",
+                "data": null
+            });
         }
 
         if (typeof transactionDate !== 'string') {
-            return res.status(400).json({ message: "transactionDate should be in string" });
+            return res.status(500).json({
+                "error": true,
+                "message": "transactionDate should be in string",
+                "data": null
+            });
         }
 
         if (typeof currencyPair !== 'string') {
-            return res.status(400).json({ message: "currencyPair should be in string" });
+            return res.status(500).json({
+                "error": true,
+                "message": "currencyPair should be in string",
+                "data": null
+            });
         }
+
+
+
+         if (validator.isEmpty(transferId)) {
+            return res.status(500).json({
+                "error": true,
+                "message": "transferId must not be empty",
+                "data": null
+            });
+        }
+
+        if (validator.isEmpty(dstCustomerRefNo)) {
+            return res.status(500).json({
+                "error": true,
+                "message": "dstCustomerRefNo should not be empty",
+                "data": null
+            });
+        }
+        if (validator.isEmpty(transactionDate)) {
+            return res.status(500).json({
+                "error": true,
+                "message": "transactionDate should not be empty",
+                "data": null
+            });
+        }
+        if (validator.isEmpty(currencyPair)) {
+            return res.status(500).json({
+                "error": true,
+                "message": "currencyPair should not be empty",
+                "data": null
+            });
+        }
+
+
+       
         console.log(data);
 
         try {
@@ -807,12 +1007,18 @@ class tradeBuyController {
                 "message": "success",
                 "data": [response]
             });
-        } catch (err) {
-            return res.status(500).json({
+        } catch (error) {
+            console.log(error)
+            const errorMessage = JSON.parse(error.message);
+            const errorReason = errorMessage.reason;
+            const errorCode = errorMessage.code;
+
+            return res.json({
                 "error": true,
-                "message": err.message,
-                "data": [null]
-            });
+                "message": errorReason,
+                "data": null,
+                "code": errorCode
+            })
         }
     }
 
@@ -837,60 +1043,121 @@ class tradeBuyController {
         console.log(data);
 
 
-
-        if (validator.isEmpty(dstCustomerRefNo)) {
-            return res.status(400).json({ message: "dstCustomerRefNo must not be empty" });
-        }
-
-        if (validator.isEmpty(channel)) {
-            return res.status(400).json({ message: "channel should not be empty" });
-        }
-
-        if (validator.isEmpty(currencyPair)) {
-            return res.status(400).json({ message: "currencyPair should not be empty" });
-        }
-
-        if (validator.isEmpty(quantity)) {
-            return res.status(400).json({ message: "quantity should not be empty" });
-        }
-
-        if (validator.isEmpty(srcCustomerRefNo)) {
-            return res.status(400).json({ message: "srcCustomerRefNo should not be empty" });
-        }
-
-        if (validator.isEmpty(transactionDate)) {
-            return res.status(400).json({ message: "transactionDate should not be empty" });
-        }
-        if (validator.isEmpty(transactionOrderID)) {
-            return res.status(400).json({ message: "transactionOrderID should not be empty" });
-        }
+           /* isEmpty & isString validation  */
 
 
-
-
+           
         if (typeof dstCustomerRefNo !== 'string') {
-            return res.status(400).json({ message: "dstCustomerRefNo should be in string" });
+            return res.status(500).json({
+                "error": true,
+                "message": "dstCustomerRefNo should be in string",
+                "data": null
+            });
         }
 
         if (typeof srcCustomerRefNo !== 'string') {
-            return res.status(400).json({ message: "srcCustomerRefNo should be in string" });
+            return res.status(500).json({
+                "error": true,
+                "message": "srcCustomerRefNo should be in string",
+                "data": null
+            });
         }
 
         if (typeof transactionDate !== 'string') {
-            return res.status(400).json({ message: "transactionDate should be in string" });
+            return res.status(500).json({
+                "error": true,
+                "message": "transactionDate should be in string",
+                "data": null
+            });
         }
         if (typeof transactionOrderID !== 'string') {
-            return res.status(400).json({ message: "transactionOrderID should be in string" });
+            return res.status(500).json({
+                "error": true,
+                "message": "transactionOrderID should be in string",
+                "data": null
+            });
         }
         if (typeof channel !== 'string') {
-            return res.status(400).json({ message: "channel should be in string" });
+            return res.status(500).json({
+                "error": true,
+                "message": "channel should be in string",
+                "data": null
+            });
         }
         if (typeof quantity !== 'string') {
-            return res.status(400).json({ message: "  quantity should be in string" });
+            return res.status(500).json({
+                "error": true,
+                "message": "quantity should be in string",
+                "data": null
+            });
         }
         if (typeof currencyPair !== 'string') {
-            return res.status(400).json({ message: "currencyPair should be in string" });
+            return res.status(500).json({
+                "error": true,
+                "message": "currencyPair should be in string",
+                "data": null
+            });
         }
+
+
+
+
+        if (validator.isEmpty(dstCustomerRefNo)) {
+            return res.status(500).json({
+                "error": true,
+                "message": "dstCustomerRefNo must not be empty",
+                "data": null
+            });
+        }
+
+        if (validator.isEmpty(channel)) {
+            return res.status(500).json({
+                "error": true,
+                "message": "channel should not be empty",
+                "data": null
+            });
+        }
+
+        if (validator.isEmpty(currencyPair)) {
+            return res.status(500).json({
+                "error": true,
+                "message": "currencyPair should not be empty",
+                "data": null
+            });
+        }
+
+        if (validator.isEmpty(quantity)) {
+            return res.status(500).json({
+                "error": true,
+                "message": "quantity should not be empty",
+                "data": null
+            });
+        }
+
+        if (validator.isEmpty(srcCustomerRefNo)) {
+            return res.status(500).json({
+                "error": true,
+                "message": "srcCustomerRefNo should not  be empty",
+                "data": null
+            });
+        }
+
+        if (validator.isEmpty(transactionDate)) {
+            return res.status(500).json({
+                "error": true,
+                "message": "transactionDate should not be empty",
+                "data": null
+            });
+        }
+        if (validator.isEmpty(transactionOrderID)) {
+            return res.status(500).json({
+                "error": true,
+                "message": "transactionOrderID should not be empty",
+                "data": null
+            });
+        }
+
+
 
 
 
@@ -904,12 +1171,18 @@ class tradeBuyController {
                 "message": "success",
                 "data": [response]
             });
-        } catch (err) {
-            return res.status(500).json({
+        } catch (error) {
+            console.log(error)
+            const errorMessage = JSON.parse(error.message);
+            const errorReason = errorMessage.reason;
+            const errorCode = errorMessage.code;
+
+            return res.json({
                 "error": true,
-                "message": err.message,
-                "data": [null]
-            });
+                "message": errorReason,
+                "data": null,
+                "code": errorCode
+            })
         }
     }
 
@@ -940,61 +1213,126 @@ class tradeBuyController {
 
 
 
+   /* isEmpty & isString validation  */
+
+   
+   if (typeof buyCustomerRefNo !== 'string') {
+    return res.status(500).json({
+        "error": true,
+        "message": "buyCustomerRefNo should be in string",
+        "data": null
+    });
+}
+
+if (typeof channel !== 'string') {          
+    return res.status(500).json({
+        "error": true,
+        "message": "channel should be in string",
+        "data": null
+    });
+}
+
+if (typeof transactionDate !== 'string') {
+    return res.status(500).json({
+        "error": true,
+        "message": "transactionDate should be in string",
+        "data": null
+    });
+}
+if (typeof transactionOrderID !== 'string') {
+    return res.status(500).json({
+        "error": true,
+        "message": "transactionOrderID should be in string",
+        "data": null
+    });
+}
+if (typeof transferCustomerRefNo !== 'string') {
+    return res.status(500).json({
+        "error": true,
+        "message": "transferCustomerRefNo should be in string",
+        "data": null
+    });
+}
+if (typeof quantity !== 'string') {
+    return res.status(500).json({
+        "error": true,
+        "message": "quantity should be in string",
+        "data": null
+    });
+}
+if (typeof currencyPair !== 'string') {
+    
+    return res.status(500).json({
+        "error": true,
+        "message": "currencyPair should be in string",
+        "data": null
+    });
+}
+
+
+
+
         if (validator.isEmpty(buyCustomerRefNo)) {
-            return res.status(400).json({ message: "buyCustomerRefNo must not be empty" });
+            return res.status(500).json({
+                "error": true,
+                "message": "buyCustomerRefNo must not be empty",
+                "data": null
+            });
         }
 
         if (validator.isEmpty(channel)) {
-            return res.status(400).json({ message: "channel should not be empty" });
+            return res.status(500).json({
+                "error": true,
+                "message": "channel should not be empty",
+                "data": null
+            });
         }
 
         if (!validator.isEmpty(currencyPair)) {
-            return res.status(400).json({ message: "currencyPair should not be empty" });
+            return res.status(500).json({
+                "error": true,
+                "message": "currencyPair should not be empty",
+                "data": null
+            });
         }
 
         if (validator.isEmpty(quantity)) {
-            return res.status(400).json({ message: "quantity should not be empty" });
+            return res.status(500).json({
+                "error": true,
+                "message": "quantity should not be empty",
+                "data": null
+            });
         }
 
         if (validator.isEmpty(transferCustomerRefNo)) {
-            return res.status(400).json({ message: "transferCustomerRefNo should not be empty" });
+            return res.status(500).json({
+                "error": true,
+                "message": "transferCustomerRefNo should not be empty",
+                "data": null
+            });
         }
 
         if (validator.isEmpty(transactionDate)) {
-            return res.status(400).json({ message: "transactionDate should not be empty" });
+            return res.status(500).json({
+                "error": true,
+                "message": "transactionDate should not be empty",
+                "data": null
+            });
         }
         if (validator.isEmpty(transactionOrderID)) {
-            return res.status(400).json({ message: "transactionOrderID should not be empty" });
+            return res.status(500).json({
+                "error": true,
+                "message": "transactionOrderID should not be empty",
+                "data": null
+            });
         }
 
         if (validator.isEmpty(billingAddressId)) {
-            return res.status(400).json({ message: "billingAddressId should not be empty" });
-        }
-
-
-
-        if (typeof buyCustomerRefNo !== 'string') {
-            return res.status(400).json({ message: "buyCustomerRefNo should be in string" });
-        }
-
-        if (typeof channel !== 'string') {
-            return res.status(400).json({ message: "channel should be in string" });
-        }
-
-        if (typeof transactionDate !== 'string') {
-            return res.status(400).json({ message: "transactionDate should be in string" });
-        }
-        if (typeof transactionOrderID !== 'string') {
-            return res.status(400).json({ message: "transactionOrderID should be in string" });
-        }
-        if (typeof transferCustomerRefNo !== 'string') {
-            return res.status(400).json({ message: "transferCustomerRefNo should be in string" });
-        }
-        if (typeof quantity !== 'string') {
-            return res.status(400).json({ message: "  quantity should be in string" });
-        }
-        if (typeof currencyPair !== 'string') {
-            return res.status(400).json({ message: "currencyPair should be in string" });
+            return res.status(500).json({
+                "error": true,
+                "message": "billingAddressId should not be empty",
+                "data": null
+            });
         }
 
 
@@ -1008,12 +1346,18 @@ class tradeBuyController {
                 "message": "success",
                 "data": [response]
             });
-        } catch (err) {
-            return res.status(500).json({
+        } catch (error) {
+            console.log(error)
+            const errorMessage = JSON.parse(error.message);
+            const errorReason = errorMessage.reason;
+            const errorCode = errorMessage.code;
+
+            return res.json({
                 "error": true,
-                "message": err.message,
-                "data": [null]
-            });
+                "message": errorReason,
+                "data": null,
+                "code": errorCode
+            })
         }
     }
 
@@ -1102,8 +1446,8 @@ class tradeBuyController {
             return;
         }
         catch (error) {
-            console.log(error);
-            return;
+            console.log(error)
+            return ;
         }
 
 

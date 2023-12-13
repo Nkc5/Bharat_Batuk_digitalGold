@@ -16,7 +16,7 @@ class tradeMmtc {
   //getNonExecutableQuote
   static getNonExecutableQuote = async (req, res) => {
 
-    const { currencyPair, type } = req.body;
+    const { currencyPair, type } = req;
 
     try {
       const response = await axios.post(`${baseUrl}/pvt/getNonExecutableQuote`, {
@@ -28,7 +28,7 @@ class tradeMmtc {
         }
       });
 
-      res.json(response.data);
+      return response.data;
 
     } catch (error) {
       console.log(error.response.data);
@@ -240,8 +240,10 @@ class tradeMmtc {
       quantity
     } = req;
 
+    console.log("req", req )
+
     if (!currencyPair || !dstCustomerRefNo || !dstMobileNumber || !email || !name || !srcCustomerRefNo
-      || !isKycRequired || !channel || !transactionOrderID || !transactionDate || !quantity) {
+       || !channel || !transactionOrderID || !transactionDate || !quantity) {
       return res.status(400).json({ error: 'Mandatory parameters missing' });
     }
 

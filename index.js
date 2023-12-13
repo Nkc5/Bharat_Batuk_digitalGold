@@ -2,7 +2,6 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const connectDB = require('./db');
-const customeTradeRoute = require('./routes/customRoutes/customTrade.router.js');
 const cors = require('cors')
 const cookieParser = require('cookie-parser');
 
@@ -14,8 +13,8 @@ connectDB();
 
 const {restrictToLoggedInUserOnly} = require('./middlewares/auth.middleware.js')
 
-const userRoute = require('./routes/mmtcRoutes/user.router.js')
-const tradeRoute = require('./routes/mmtcRoutes/trade.router.js');
+
+const customeTradeRoute = require('./routes/customRoutes/customTrade.router.js');
 const resisterUserRoute= require('./routes/customRoutes/security.router.js');
  const addressRouter=require('./routes/customRoutes/address.router.js');
 const nomineeRouter=require('./routes/customRoutes/nominee.router.js');
@@ -25,6 +24,9 @@ const priceRouter=require('./routes/customRoutes/price.router.js');
 const panRouter=require('./routes/customRoutes/verifyPan.router.js')
 const logoutRouter = require('./routes/customRoutes/logout.router.js')
 const userUpdateRouter = require('./routes/customRoutes/userUpdate.router.js')
+const updateFCMrouter = require('./routes/customRoutes/updateFCM.router.js');
+const stateCode = require('./routes/customRoutes/stateCode.router.js')
+
 
 
 dotenv.config();
@@ -34,15 +36,6 @@ app.use(express.json())
 
 app.use(cors());
 app.use(cookieParser());
-
-/*          MMTC  API    */
-
-// userRoutes
-app.use('/user', userRoute)  
-
-
-// trade
-app.use('/trade', tradeRoute)
 
 
 
@@ -56,8 +49,8 @@ app.use('/customUser', resisterUserRoute)
 app.use('/customTrade', restrictToLoggedInUserOnly, customeTradeRoute)
 
  app.use('/address', restrictToLoggedInUserOnly, addressRouter)
-app.use('/nominee',nomineeRouter)
-app.use('/preference',preferenceRouter)
+app.use('/nominee',restrictToLoggedInUserOnly, nomineeRouter)
+app.use('/preference',restrictToLoggedInUserOnly,preferenceRouter)
 app.use('/pan', restrictToLoggedInUserOnly, panRouter)
 
 // price
@@ -67,8 +60,14 @@ app.use('/price', priceRouter);
  //update user
  app.use('/users', restrictToLoggedInUserOnly, userUpdateRouter)
 
+ 
+ //update FCM
+app.use('/updateFCM', restrictToLoggedInUserOnly, updateFCMrouter)
+
+//stateCode
+app.use('/stateCode',stateCode)
+
 //logout
-// app.use('/logout',restrictToLoggedInUserOnly, logoutRouter)
 app.use('/logout', restrictToLoggedInUserOnly, logoutRouter)
 
 app.get('/', (req, res)=>{

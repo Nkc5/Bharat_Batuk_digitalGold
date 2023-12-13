@@ -2,7 +2,7 @@
 const mongoose = require('mongoose');
 
 const preferenceSchema = new mongoose.Schema({
-    customer_ref: String,
+    usercustomerRefNo: String,
     incomeRange: String,
     occupation: String,
     MartialStatus: String,

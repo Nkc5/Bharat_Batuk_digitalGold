@@ -315,7 +315,7 @@ class AddressController {
   }
 
 
-
+//delete address
   async deleteAddress(req, res) {
     try {
       const customerRefNo = req.user._id; // Assuming the ID of the address to delete is sent in the request body
