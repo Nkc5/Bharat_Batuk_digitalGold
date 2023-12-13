@@ -78,7 +78,7 @@ class AddressController {
       return res.status(400).json({
         error: true,
         message: errors,
-        data: [null],
+        data: [],
       });
     }
 
@@ -190,7 +190,7 @@ class AddressController {
       return res.status(500).json({
         error: true,
         message: err.message,
-        data: null,
+        data: [],
       });
     }
 
@@ -224,7 +224,7 @@ class AddressController {
         return res.status(404).json({
           error: true,
           message: 'User not found',
-          data: null,
+          data: [],
         });
       }
     } catch (error) {
@@ -232,7 +232,7 @@ class AddressController {
       return res.status(500).json({
         error: true,
         message: 'Internal server error',
-        data: null,
+        data: [],
       });
     }
   }
@@ -240,79 +240,73 @@ class AddressController {
 
 
 
-  async updateAddress(req, res) {
+//update address
+async updateAddress(req, res) {
 
+  try {
+    const customerRefNo = req.user._id;
+    console.log('CustomerRefNum:', customerRefNo);
+
+    const updateAddressData = req.body;
+    console.log('Update Address Data:', updateAddressData);
+
+    // Use findOneAndUpdate instead of findByIdAndUpdate to have more control
+    const updatedAddress = await addressModel.findOneAndUpdate(
+      { usercustomerRefNo: customerRefNo },
+      updateAddressData,
+      { new: true }
+    );
+    console.log(updatedAddress);
+
+    if (!updatedAddress) {
+      return res.status(404).json({
+        error: true,
+        message: 'User not found',
+        data: [],
+      });
+    }
+
+    // Log the updated address for debugging purposes
+    console.log('Updated Address:', updatedAddress);
+
+    // Make a cURL request to MMTC for updating address
     try {
-      const customerRefNo = req.user._id;
-      console.log('CustomerRefNum:', customerRefNo);
+      // Ensure that the data sent to MMTC is correct, modify the function parameters as needed
+      const result1 = await userMMtc.addUpdateAddress(updateAddressData, res);
 
-      const updateAddressData = req.body;
-      console.log('Update Address Data:', updateAddressData);
 
-      // Use findOneAndUpdate instead of findByIdAndUpdate to have more control
-      const updatedAddress = await addressModel.findOneAndUpdate(
-        { usercustomerRefNo: customerRefNo },
-        updateAddressData,
-        { new: true }
-      );
-      console.log(updatedAddress);
-
-      if (!updatedAddress) {
-        return res.status(404).json({
-          error: true,
-          message: 'User not found',
-          data: null,
+        return res.json({
+          error: false,
+          message: 'User updated successfully',
+          data: [result1],
         });
-      }
-
-      // Log the updated address for debugging purposes
-      console.log('Updated Address:', updatedAddress);
-
-      // Make a cURL request to MMTC for updating address
-      try {
-        // Ensure that the data sent to MMTC is correct, modify the function parameters as needed
-        const result1 = await userMMtc.addUpdateAddress(updateAddressData, res);
-
-        // Check if the request was successful with MMTC or handle accordingly
-        if (result1 && result1.success) {
-
-          return res.json({
-            error: false,
-            message: 'User updated successfully',
-            data: [result1],
-          });
-        } else {
-          // Log the result for debugging purposes
-          console.error('MMTC Request Result:', result1);
-
-          // Handle the case when the MMTC request fails
-          return res.status(500).json({
-            error: true,
-            message: 'MMTC request failed',
-            data: null,
-          });
-        }
-      } catch (err) {
-        console.error('MMTC Error:', err);
-
-        // Log the error for debugging purposes
-        console.error('MMTC Request Error:', err);
-
         return res.status(500).json({
           error: true,
-          message: 'MMTC Internal Server Error',
-          data: null,
+          message: 'MMTC request failed',
+          data: [],
         });
-      }
-    } catch (error) {
-      console.error('Error:', error);
+      
+    } catch (err) {
+      console.error('MMTC Error:', err);
+
+      // Log the error for debugging purposes
+      console.error('MMTC Request Error:', err);
+
       return res.status(500).json({
         error: true,
-        message: 'Internal Server Error',
-        data: null,
+        message: 'MMTC Internal Server Error',
+        data: [],
       });
     }
+  } catch (error) {
+    console.error('Error:', error);
+    return res.status(500).json({
+      error: true,
+      message: 'Internal Server Error',
+      data: [],
+    });
   }
+}
 
 
 //delete address
@@ -327,7 +321,7 @@ class AddressController {
         return res.status(404).json({
           error: true,
           message: 'Address not found',
-          data: null,
+          data: [],
         });
       }
 
@@ -341,7 +335,7 @@ class AddressController {
       return res.status(500).json({
         error: true,
         message: error.message,
-        data: null,
+        data: [],
       });
     }
   }
