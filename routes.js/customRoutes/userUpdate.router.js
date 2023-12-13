@@ -1,6 +1,6 @@
 
 const express = require('express');
-const UpdateProfileController = require('../../controllers/customApi/user.updateProfile.js');
+const UpdateProfileController = require('../../controllers/customApi/userUpdateProfile.controller.js');
 
 const router = express.Router();
 

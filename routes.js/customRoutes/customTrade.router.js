@@ -9,6 +9,7 @@ const router = express.Router();
 
 
 /* Trade BUY  */
+router.post('/getNonExecutableQuote', tradeBuyController.getNonExecutableQuote);
 router.post('/buy', tradeBuyController.buy);
 router.post('/validateBuy', tradeBuyController.validateBuy);
 router.post('/executeBuy', tradeBuyController.executeBuy);

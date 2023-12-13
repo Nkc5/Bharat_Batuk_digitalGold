@@ -1,7 +1,7 @@
 
 const express = require('express');
 const router = express.Router();
-const userActive = require('../../controllers/customApi/active.controller.js'); 
+const userActive = require('../../controllers/customApi/userActive.controller.js'); 
 
 
 

@@ -54,6 +54,93 @@ class tradeBuyController {
     static transactionRefNo;
 
 
+
+
+
+    
+    //getNonExecutableQuote
+
+    static getNonExecutableQuote = async (req, res) => {
+
+        const { currencyPair, type } = req.body;
+        const data = req.body;
+
+
+         /* isString & isEmpty validation     */
+
+
+        // currencyPair validation
+        if (typeof currencyPair !== "string") {
+            return res.json({
+                "error": true,
+                "message": "currencyPair must be string",
+                "data": null
+            })
+        }
+
+        if (typeof type !== "string") {
+            return res.json({
+                "error": true,
+                "message": "type must be string",
+                "data": null
+            })
+        }
+
+
+        // currencyPair validation
+        if (validator.isEmpty(currencyPair)) {
+            return res.json({
+                "error": true,
+                "message": "currencyPair must not be empty",
+                "data": null
+            })
+        }
+
+        if (validator.isEmpty(type)) {
+            return res.json({
+                "error": true,
+                "message": "type must not be empty",
+                "data": null
+            })
+        }
+        
+
+
+
+
+        try {
+
+            // mmtc getQuoteBuy  call
+            const response = await tradeMmtc.getNonExecutableQuote(data, res);
+
+            return res.json({
+                "error": false,
+                "message": "success",
+                "data": [response]
+            });
+        }
+        catch (error) {
+            console.log(error)
+            const errorMessage = JSON.parse(error.message);
+            const errorReason = errorMessage.reason;
+            const errorCode = errorMessage.code;
+
+            return res.json({
+                "error": true,
+                "message": errorReason,
+                "data": null,
+                "code": errorCode
+            })
+
+        }
+
+        
+    }
+
+
+
+
+
     /*          BUY        */
 
     // buy api

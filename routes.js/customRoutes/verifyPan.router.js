@@ -1,5 +1,5 @@
 const express = require('express');
-const PanVerificationController = require('../../controllers/customApi/user.verifyPanNumber.js');
+const PanVerificationController = require('../../controllers/customApi/userVerifyPanNumber.controller.js');
 // const NomineeController = require('../../controllers/customApi/user.nominee.js');
 
 const router = express.Router();

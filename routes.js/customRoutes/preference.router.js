@@ -1,5 +1,5 @@
 const express = require('express');
-const preferenceController =require('../../controllers/customApi/user.preference.js');
+const preferenceController =require('../../controllers/customApi/userPreference.controller.js');
 
 const router = express.Router();
 const controller = new preferenceController();

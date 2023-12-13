@@ -1,5 +1,5 @@
 const express = require('express');
-const NomineeController = require('../../controllers/customApi/user.nominee.js');
+const NomineeController = require('../../controllers/customApi/userNominee.controller.js');
 const router = express.Router();
 
 

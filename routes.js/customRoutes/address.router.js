@@ -1,7 +1,7 @@
 
 const express = require('express');
 const addressRouter = express.Router();
-const AddressController = require('../../controllers/customApi/user.address.js'); 
+const AddressController = require('../../controllers/customApi/userAddress.controller.js'); 
 
 
 addressRouter.post('/addaddress', AddressController.addAddress.bind(AddressController));
