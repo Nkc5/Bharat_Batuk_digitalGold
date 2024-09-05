@@ -5,7 +5,8 @@ const country_Schema = mongoose.Schema({
         type: Number
     },
     name:{
-        type: String
+        type: String,
+        default: "Bharat"
     },
     flag:{
         type:String

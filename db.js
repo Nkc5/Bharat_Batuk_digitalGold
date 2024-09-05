@@ -10,4 +10,20 @@ const connectDB = async () => {
     process.exit(1);
   }
 }
-module.exports = connectDB;
+
+
+const augmontDatabase = async () =>{
+
+  try {
+    const augmontConn  = await mongoose.createConnection(process.env.MONGO_URL2);
+    console.log(`MongoDB Connected (Augmont)`);
+    return augmontConn;
+  } catch (error) {
+    console.error(error.message);
+    return process.exit(1);
+  }
+  finally{
+    await augmontConn .close();
+  }
+}
+module.exports = {connectDB, augmontDatabase};

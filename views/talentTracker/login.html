@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <!-- <link href="./style.css" rel="stylesheet" > -->
+    <title>Login Form</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap");
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background: linear-gradient(
+          90deg,
+          rgba(2, 0, 36, 1) 0%,
+          rgba(75, 14, 154, 1) 35%,
+          rgba(0, 212, 255, 1) 100%
+        );
+        font-family: "Poppins", sans-serif;
+      }
+      form {
+        justify-content: center;
+        border-radius: 20px;
+        margin-top: 150px !important;
+        width: 50% !important;
+        background-color: white !important;
+        padding: 50px;
+      }
+
+      .btn-primary {
+        width: 100%;
+        border: none;
+        border-radius: 50px;
+        background: linear-gradient(
+          90deg,
+          rgba(2, 0, 36, 1) 0%,
+          rgba(75, 14, 154, 1) 35%,
+          rgba(0, 212, 255, 1) 100%
+        );
+      }
+
+      .form-control {
+        color: rgba(0, 0, 0, 0.87);
+        border-bottom-color: rgba(0, 0, 0, 0.42);
+        box-shadow: none !important;
+        border: none;
+        border-bottom: 1px solid;
+        border-radius: 4px 4px 0 0;
+      }
+      h4 {
+        font-size: 2rem !important;
+        font-weight: 700;
+      }
+      .form-label {
+        font-weight: 800 !important;
+      }
+      @media only screen and (max-width: 600px) {
+        form {
+          width: 100% !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <form class="mx-auto jsutify-content-center">
+        <h4 class="text-center">Login</h4>
+        <div class="mb-3 mt-5">
+          <label for="email" class="form-label">Email</label>
+          <input
+            type="email"
+            class="form-control"
+            id="email"
+            aria-describedby="emailHelp"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" class="form-control" id="password" />
+          <!-- <div id="emailHelp" class="form-text mt-3">Forget password ?</div> -->
+        </div>
+
+        <button
+          type="submit"
+          class="btn btn-primary mt-5"
+          onclick="submitForm(event)"
+        >
+          Login
+        </button>
+      </form>
+      <div id="message"></div>
+    </div>
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+
+    <script>
+      function submitForm(event) {
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        const message = document.getElementById("message");
+
+        event.preventDefault();
+
+        // Make a POST request to the server
+        fetch("/employee/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        })
+          .then((response) => {
+            return response.json();
+          })
+          .then((data) => {
+            console.log("Server response:", data);
+            if (data.error) {
+              console.error("Login error:", data.error);
+              message.innerHTML = "Wrong credentials";
+              alert("Wrong credentials")
+
+            } else {
+              window.location.href = "/employee/renderDashboard";
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error.message);
+          
+            // Handle errors here
+          });
+      }
+    </script>
+  </body>
+</html>
+
+<!-- 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <title>Login Page</title>
+</head>
+<body>
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h2 class="card-title text-center">Login</h2>
+          <form id="loginForm">
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <button type="button" class="btn btn-primary" onclick="submitForm()">Login</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+ -->

@@ -2,19 +2,32 @@ const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
 
-    "id":{
+    "id": {
         type: Number,
     },
-//    "password": String,
-     
+
+    "imageUrl": {
+        type: String,
+    },
+    "panUrl": {
+        type: String,
+    },
+    "adharUrl": {
+        type: String,
+    },
+    "adharBackUrl": {
+        type: String,
+    },
     "mmtc_customer_ref": {
         type: String,
         default: null
     },
-
+    "uniqueId": {
+        type: String,
+        default: null
+    },
     "name": {
         type: String,
-        required: true,
         trim: true
     },
 
@@ -28,8 +41,6 @@ const userSchema = new mongoose.Schema({
     },
     "email": {
         type: String,
-        required: true,
-        unique: true
     },
     "is_email_verified": {
         type: Number,
@@ -39,13 +50,16 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: "Bharat"
     },
+    "state": {
+        type: String,
+        default: null
+    },
     "city": {
-        type: Number,
-        default: 0
+        type: String,
+        default: null
     },
     "dob": {
         type: String,
-        required: true,
     },
     "pan_number": {
         type: String,
@@ -79,7 +93,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: null
     },
-    
+
     "last_login": {
         type: Date,
     },
@@ -87,7 +101,11 @@ const userSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
-}, {timestamps: true})
+    otp: String,
+    language: String
+
+
+}, { timestamps: true })
 
 
 

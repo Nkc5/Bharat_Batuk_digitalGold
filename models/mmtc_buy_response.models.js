@@ -29,7 +29,9 @@ const buyResSchema = new mongoose.Schema({
      "executionDateTime": String,
      "pricePerG": String,
      "taxPercent": String,
-     "remainingBalance": Array
+     "remainingBalance": Array,
+     "invoicePDF": String,
+     "rezorpayTid": String
 
 })
 

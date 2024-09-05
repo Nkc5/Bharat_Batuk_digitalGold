@@ -1,0 +1,63 @@
+{
+  "statusCode": 200,
+  "message": "Invoice fetched successfully",
+  "result": {
+    "data": {
+      "invoiceNumber": "GBQ032440209",
+      "userInfo": {
+        "name": "Sandipan",
+        "address": null,
+        "city": null,
+        "state": "Uttar Pradesh",
+        "pincode": "221001",
+        "email": null,
+        "mobileNumber": null,
+        "uniqueId": "49a612c9-8"
+      },
+      "transactionId": "BQ720217099660439550200303",
+      "quantity": "1.0000",
+      "metalType": "gold",
+      "hsnCode": "711419",
+      "rate": "6701.40",
+      "unitType": "Gram",
+      "grossAmount": "6701.40",
+      "netAmount": "6902.44",
+      "taxes": {
+        "totalTaxAmount": "201.04",
+        "taxSplit": [
+          {
+            "type": "CGST",
+            "taxPerc": "1.50",
+            "taxAmount": "100.52"
+          },
+          {
+            "type": "SGST",
+            "taxPerc": "1.50",
+            "taxAmount": "100.52"
+          },
+          {
+            "type": "IGST",
+            "taxPerc": "0.00",
+            "taxAmount": "0.00"
+          }
+        ]
+      },
+      "tcsInfo": {
+        "tcsPerc": "0",
+        "tcsAmount": "0"
+      },
+      "discount": [
+        {
+          "type": "percentage",
+          "title": "tcs",
+          "value": "0",
+          "amount": "0",
+          "description": "TCS discount"
+        }
+      ],
+      "invoiceDate": "09-03-2024 12:04:03",
+      "purity": "999",
+      "karat": "24K"
+    }
+  }
+}

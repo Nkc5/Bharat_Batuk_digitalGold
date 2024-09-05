@@ -7,7 +7,8 @@ const nomineeSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    usercustomerRefNo: String,
+    customerRefNo: String,
+    
     phone: {
         type: String,
         required: true

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <title>Dashboard Page</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    />
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+       
+        <nav>
+          <ul>
+            <li>Dashboard</li>
+            <li>Upload Excel</li>
+            <li>Employee Data</li>
+          </ul>
+        </nav>
+
+        <!-- Center (Table) -->
+        <div class="col-md-6">
+          <table class="table" id="employeeTable">
+            <thead>
+              <tr>
+                <th scope="col">external_id</th>
+                <th scope="col">employee_name</th>
+                <th scope="col">Department</th>
+                
+                <!-- Add more table headers as needed -->
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Table rows will be dynamically added here -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Right Side (Logout) -->
+        <div class="col-md-3">
+          <div class="card">
+            <div class="card-body">
+              <button
+                type="button"
+                class="btn btn-danger btn-block"
+                onclick="logout()"
+              >
+                Logout
+              </button>
+              <button
+                type="button"
+                class="btn btn-success btn-block"
+                onclick="downloadExcelFile()"
+              >
+                Download Excel File
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+    <script>
+        //upload excel
+        async function uploadFile() {
+          const form = document.getElementById("uploadForm");
+          const formData = new FormData(form);
+
+          // console.log(form);
+
+          try {
+            const response = await fetch("/employee/importuser", {
+              method: "POST",
+              body: formData,
+            });
+
+            console.log(response);
+
+            if (response.ok) {
+              const filePath = await response.text();
+              alert(`File uploaded to: ${filePath}`);
+            } else {
+              alert("File upload failed");
+            }
+          } catch (error) {
+            console.error("Error:", error.message);
+          }
+        }
+
+        function downloadExcelFile() {
+          // Navigate to the download URL for the Excel file
+          window.location.href = "/employee/exportUser";
+        }
+
+
+
+        function logout() {
+          fetch("/employee/logout", {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              console.log("Server response:", data);
+              if (data.error) {
+                console.error("Logout error:", data.error);
+              } else {
+                // Redirect to the login page
+                console.log("logout response", data);
+                window.location = "/employee/renderLogin";
+              }
+            })
+            .catch((error) => {
+              console.error("Error:", error.message);
+
+              // Handle errors here
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+          fetch("/employee/tableData")
+            .then((response) =>{
+
+              console.log("response", response)
+              return response.json()
+            })
+            .then((data) => {
+              // console.log("data", data);
+              // console.log("Type of data:", typeof data);
+              // console.log("Keys of the first element:", Object.keys(data[0]));
+              const tbody = document.querySelector("#employeeTable tbody");
+              tbody.innerHTML = "";
+
+              data.slice(1).forEach((employee) => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                        <th scope="row">${employee.external_id}</th>
+                        <td>${employee.employee_name}</td>
+                        <td>${employee.department}</td>
+                        <!-- Add more table cells as needed -->
+                        <td><button class="viewEmpData btn btn-primary" data-employee-id="${employee.external_id}">View</button></td>
+
+                    `;
+                tbody.appendChild(row);
+              });
+                 // Add event listeners for each "View" button
+                 const viewButtons = document.querySelectorAll('.viewEmpData');
+             viewButtons.forEach(button => {
+          button.addEventListener('click', function () {
+            const employeeId = button.dataset.employeeId;
+             // Navigate to the new page only if data is fetched successfully
+             const url = `/employee/renderTalentTracker/?employeeId=${employeeId}`;
+            window.location.href = url;
+          });
+        });
+      })
+           
+            .catch((error) => {
+              console.error("Error fetching data:", error);
+            });
+
+
+
+
+
+          const viewButton = document.getElementById("viewButton");
+
+          viewButton.addEventListener("click", function () {
+            const employeeIdInput = document.getElementById("employeeId");
+            const employeeId = employeeIdInput.value;
+
+            // Navigate to the new page only if data is fetched successfully
+            const url = `/employee/renderTalentTracker/?employeeId=${employeeId}`;
+            window.location.href = url;
+          });
+        });
+    </script>
+  </body>
+</html>

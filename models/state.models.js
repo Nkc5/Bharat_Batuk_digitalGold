@@ -12,7 +12,7 @@ const stateSchema = new mongoose.Schema({
     },
 
     country_id: {
-        type: Number
+        type: String,
     },
     status: {
         type: Number,

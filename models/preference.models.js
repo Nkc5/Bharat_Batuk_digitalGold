@@ -2,11 +2,12 @@
 const mongoose = require('mongoose');
 
 const preferenceSchema = new mongoose.Schema({
-    usercustomerRefNo: String,
+    customerRefNo: String,
+    instruments: String,
     incomeRange: String,
     occupation: String,
     MartialStatus: String,
-    instruments: String,
+    investment: String,
     appUse: String,
     savingPercentage: String,
     savingsFor: String,

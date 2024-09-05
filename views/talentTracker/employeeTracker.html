@@ -1,0 +1,591 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <title>Form Design</title>
+    <style>
+      *{
+    box-sizing: border-box;
+    margin: 100;
+    padding: 100;
+}
+.my-container {
+    font-size: 17px; / Set the desired font size /
+
+    / Add any other styles you want /
+  }
+  .custom-button {
+    margin-bottom: 10px; / Set the desired gap between buttons /
+    width: 100%;
+    gap: 2px; / Set the desired width for the buttons /
+  }
+      </style>
+  </head>
+  <body>
+   <!-- <div class="container-fluid bg-light text-light py-3">
+       <header class="text-center">
+           <h1 class="display-6">Welcome to our page</h1>
+       </header>
+   </div> -->
+  
+   <section class="container-fluid p-5 my-30 text-dark p-5 my-containerw-1 w-100 h-100">
+    <form class="row g-4   container-fluid">
+   
+        <div class="col-md-3 ">
+            <label class="bg-grey" for="empName" value="" class="form-label" bg-success>Employee Name</label>
+            <input type="text" placeholder="Employee Name" class="form-control" id="empName" required>
+          </div>
+          <div class="col-md-3">
+            <label class="bg-gradient" for="grade" class="form-label">Grade</label>
+            <input type="text" placeholder="Enter Grade" class="form-control" id="grade" value="" required>
+          </div>
+          <div class="col-md-3">
+            <label class="bg-gradient" for="managerName" class="form-label">Manager Name</label>
+            <div class="input-group">
+              <!-- <span class="input-group-text" id="inputGroupPrepend2">@</span> -->
+              <input type="text" class="form-control"placeholder="Enter Manager Name" id="managerName"  aria-describedby="inputGroupPrepend2" required>
+            </div>
+          </div>
+        <div class="col-md-3">
+          <label class="bg-gradient"for="divisionHead" class="form-label">Division Head</label>
+          <input type="email" placeholder="Enter Division Head" class="form-control" id="divisionHead">
+        </div>
+        <div class="col-md-3">
+            <label class="bg-gradient" for="department" class="form-label">Department</label>
+            <input type="" class="form-control"placeholder="Enter Department" id="department">
+          </div>
+          <div class="col-md-3">
+            <label class="bg-gradient" for="subDepartment" class="form-label">Sub Department</label>
+            <input type="" class="form-control" placeholder="Enter Sub Department"id="subDepartment">
+          </div>
+        <div class="col-md-3">
+          <label class="bg-gradient" for="designation"placeholder="Enter Designation" class="form-label">Designation</label>
+          <input type="text" class="form-control" id="designation" placeholder="">
+        </div>
+        <div class="col-3">
+          <label class="bg-gradient" for="currentLocation" class="form-label">Current Location</label>
+          <input type="text" class="form-control" id="currentLocation" placeholder="">
+        </div>
+        <div class="col-md-2">
+          <label class="bg-gradient"for="lastPromotionDate" class="form-label">Last Promotion Date</label>
+          <input type="text" class="form-control" id="lastPromotionDate">
+        </div>
+
+        <div class="col-md-2">
+          <label class="bg-gradient" for="employeeAge" class="form-label">Employee Age</label>
+          <input type="text" class="form-control" id="employeeAge">
+            <!-- <option selected>Choose...</option>
+            <option>...</option> -->
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label class="bg-gradient" for="nsdcExperience" class="form-label">NSDC Experience</label>
+          <input type="text" class="form-control" id="nsdcExperience">
+        </div>
+        <div class="col-md-3">
+            <label class="bg-gradient"for="externalExperience" class="form-label">External Experience</label>
+            <input type="text" class="form-control" id="externalExperience">
+          </div>
+          <div class="col-md-2">
+            <label class="bg-gradient"for="totalExperience" class="form-label">Total Experience</label>
+            <input type="text" class="form-control" id="totalExperience">
+          </div>
+         
+  
+          <div class="form-group col-md-6">
+            <label class="bg-gradient" for="previousCareerHistory">Previous Career History</label>
+            <textarea class="form-control" id="previousCareerHistory" rows="3"></textarea>
+          </div>
+          <div class="form-group col-md-6">
+            <label class="bg-gradient" for="qualification">Qualification</label>
+            <textarea class="form-control" id="qualification" rows="3"></textarea>
+          </div>
+          <h5 class="bg-primary p-2 mt-4 text-center">Risk Profile</h5>
+          <div class="col-md-4">
+            <label for="Impactoflose" class="form-label">Impact of lose</label>
+            <!-- <input type="text" class="form-control" id="inputZip"> -->
+
+         
+
+            <select id="Impactoflose" class="form-select">
+                <option></option>
+                <option>High</option>
+                <option>Medium</option>
+                <option>Low</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label for="Risk" class="form-label">Attrition Risk</label>
+            <!-- <input type="text" class="form-control" id="inputZip"> -->
+            <select id="Risk" class="form-select">
+                <option></option>
+                <option>High</option>
+                <option>Medium</option>
+                <option>Low</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label for="Critically" class="form-label">Critically</label>
+            <!-- <input type="text" class="form-control" id="inputZip"> -->
+            <select id="Critically" class="form-select">
+                <option></option>
+                <option>High</option>
+                <option>Medium</option>
+                <option>Low</option>
+            </select>
+          </div>
+          <h5 class="bg-primary p-2 mt-4  text-center">Potential</h5>
+          <div class="col-md-3">
+            <label for="Ability" class="form-label">Ability</label>
+            <!-- <input type="text" class="form-control" id="inputZip"> -->
+            <select id="Ability" class="form-select">
+                <option></option>
+                <option>High</option>
+                <option>Medium</option>
+                <option>Low</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label for="Aspiration" class="form-label text-center">Aspiration</label>
+            <!-- <input type="text" class="form-control" id="inputZip"> -->
+            <select id="Aspiration" class="form-select">
+                <option></option>
+                <option>High</option>
+                <option>Medium</option>
+                <option>Low</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label for="Alignment" class="form-label">Alignment</label>
+            <!-- <input type="text" class="form-control" id="inputZip"> -->
+            <select id="Alignment" class="form-select">
+                <option></option>
+                <option>High</option>
+                <option>Medium</option>
+                <option>Low</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label for="Agility" class="form-label">Agility</label>
+            <!-- <input type="text" class="form-control" id="inputZip"> -->
+            <select id="Agility" class="form-select">
+                <option></option>
+                <option>High</option>
+                <option>Medium</option>
+                <option>Low</option>
+            </select>
+          </div>
+          <h5 class="bg-primary p-2 text-center">Performance</h5>
+          <div class="col-md-4">
+            <label for="FY2023" class="form-label">FY2023</label>
+            <input type="text" class="form-control" id="FY2023">
+          </div>
+          <div class="col-md-4">
+            <label for="FY2022" class="form-label">FY2022</label>
+            <input type="text" class="form-control" id="FY2022">
+          </div>
+          <div class="col-md-4">
+            <label for="FY2021" class="form-label">FY2021</label>
+            <input type="text" class="form-control" id="FY2021">
+          </div>
+        </div>
+        
+        <div class="col-md-4">
+          <label for="Promotion" class="form-label">Promotion</label>
+          <select id="Promotion" class="form-select">
+            <option></option>
+            <option>YES</option>
+            <option>NO</option>
+            
+        </select>
+        </div>
+         
+        <div class="col-md-4">
+            <label for="JobEnlargement" class="form-label">Job Enlargement</label>
+            <!-- <input type="text" class="form-control" id="inputZip"> -->
+            <select id="JobEnlargement" class="form-select">
+                <option></option>
+                <option>YES</option>
+                <option>NO</option>
+                <option>To be Discussed</option>
+                
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label for="FutureRisk" class="form-label">Potential Future Risk</label>
+            <!-- <input type="text" class="form-control" id="inputZip"> -->
+            <select id="FutureRisk" class="form-select">
+                <option></option>
+                <option>Coordinator</option>
+                <option>Deputy General Manager(DGM)</option>
+                <option>Executive</option>
+                <option>General Manager</option>
+                <option>Executive-Technical Content Writing</option>
+              
+                
+            </select>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="actionforRole ">Action for Role (ONLY 3)</label>
+            <textarea class="form-control" id="actionforRole" rows="3"></textarea>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <label for="possibleGrade" class="form-label">Possible Grade(if Promotion)</label>
+          <input type="text" class="form-control" id="possibleGrade">
+        </div>
+        <div class="col-md-3">
+            <label for="readiness" class="form-label">Readiness</label>
+            <!-- <input type="text" class="form-control" id="inputZip"> -->
+            <select id="readiness" class="form-select">
+                <option></option>
+                <option>0-6 Months</option>
+                <option>6 Months-1 Year</option>
+                <option>1 Year-2 Years</option>
+                <option>2 Years-3 Years</option>
+         
+              
+                
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label for="cashSuccessor" class="form-label">Cash Successor</label>
+            <input type="text" id="cashSuccessor" class="form-control">
+          </div>
+          <div class="col-md-4">
+            <label for="potentialSuccessor" class="form-label">Potential Successor</label>
+            <input type="text" id="potentialSuccessor" class="form-control">
+
+          </div>
+          <div class="col-md-4">
+            <label for="successorReadiness" class="form-label">Successor Readiness</label>
+            <input type="text" id="successorReadiness" class="form-control">     
+          </div>
+
+          <div class="form-group col-md-4">
+            <label for="Strengths">Strengths</label>
+            <textarea class="form-control" id="Strengths" rows="3"></textarea>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="Achievements">Key Achievements</label>
+            <textarea class="form-control" id="Achievements" rows="3"></textarea>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="Initiatives">Key Initiatives</label>
+            <textarea class="form-control" id="Initiatives" rows="3"></textarea>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="functional">Development Areas-functional</label>
+            <textarea class="form-control" id="functional" rows="3"></textarea>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="Behavioral">Development Areas Areas-Behavioral</label>
+            <textarea class="form-control" id="Behavioral" rows="3"></textarea>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="comments">Overall comments</label>
+            <textarea class="form-control" id="comments" rows="3"></textarea>
+          </div>
+
+
+
+          <div class="col-md-12  justify-content-center">
+            <!-- <button type="button" class="btn btn-info btn-lg custom-button">Strengths</button>
+            <button type="button" class="btn btn-info btn-lg custom-button">Key Achievements</button>
+            <button type="button" class="btn btn-info btn-lg custom-button">Key Initiatives</button>
+            <button type="button" class="btn btn-info btn-lg custom-button">Developments <Areas-Functional></Areas-Functional></button>
+            <button type="button" class="btn btn-info btn-lg custom-button">Development Areas-Behavioral</button>
+            <button type="button" class="btn btn-info btn-lg custom-button">Overall comments</button> -->
+            <!-- <button type="button" class="btn btn-info btn-lg ">Add comments</button> -->
+          </div>
+        
+          <div class="col-12 d-flex justify-content-center gap-2">
+            <!-- <button type="submit" class="btn btn-info btn-lg">Add Comments</button> -->
+            <div id="updateMessage" class="text-success mb-4"></div> <br>
+             <button type="button" class="btn btn-info btn-lg" id="btn-update">Update</button>
+        </div>
+        
+      </form>
+   </section>
+  
+
+
+   <script>
+      document.addEventListener("DOMContentLoaded",async function() {
+    
+        const name = document.getElementById('empName');
+        const grade = document.getElementById('grade');
+        const managerName = document.getElementById('managerName');
+        const divisionHead = document.getElementById('divisionHead');
+        const department = document.getElementById('department');
+        const subDepartment = document.getElementById('subDepartment');
+        const designation = document.getElementById('designation');
+        const currentLocation = document.getElementById('currentLocation');
+        const lastPromotionDate = document.getElementById('lastPromotionDate');
+        const employeeAge = document.getElementById('employeeAge');
+        const nsdcExperience = document.getElementById('nsdcExperience');
+        const externalExperience = document.getElementById('externalExperience');
+        const totalExperience = document.getElementById('totalExperience');
+        const previousCareerHistory = document.getElementById('previousCareerHistory');
+        const qualification = document.getElementById('qualification');
+        const Impactoflose = document.getElementById('Impactoflose');
+        const Risk = document.getElementById('Risk');
+        const Critically = document.getElementById('Critically');
+        const Ability = document.getElementById('Ability');
+        const Aspiration = document.getElementById('Aspiration');
+        const Alignment = document.getElementById('Alignment');
+        const Agility = document.getElementById('Agility');
+        const Promotion = document.getElementById('Promotion');
+        const JobEnlargement = document.getElementById('JobEnlargement');
+        const FutureRisk = document.getElementById('FutureRisk');
+
+        
+
+
+        
+
+
+
+
+        
+
+
+
+        const FY2021 = document.getElementById('FY2021');
+        const FY2022 = document.getElementById('FY2022');
+        const FY2023 = document.getElementById('FY2023');
+
+
+
+        const actionforRole = document.getElementById('actionforRole');
+        const possibleGrade = document.getElementById('possibleGrade');
+
+
+
+
+
+        const readiness = document.getElementById('readiness');
+
+
+
+        const cashSuccessor = document.getElementById('cashSuccessor');
+        const potentialSuccessor = document.getElementById('potentialSuccessor');
+        const successorReadiness = document.getElementById('successorReadiness');
+        const Strengths = document.getElementById('Strengths');
+        const Achievements = document.getElementById('Achievements');
+        const Initiatives = document.getElementById('Initiatives');
+        const functional = document.getElementById('functional');
+        const Behavioral = document.getElementById('Behavioral');
+        const comments = document.getElementById('comments');
+
+
+
+        
+
+
+
+
+
+
+
+       // Get employeeId from the URL query parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const employeeId = urlParams.get('employeeId');
+
+    try {
+      const response = await fetch(`/employee/employeeTracker/?employeeId=${employeeId}`, {
+        method: 'GET',
+        headers: {
+    'Content-Type': 'application/json',
+  }
+  // body: JSON.stringify({ name }),
+
+      }).then((response) => {
+            return response.json();
+          })
+          .then((data) => {
+            console.log("Server response:", data);
+            if (data.error) {
+              console.error("Login error:", data.error);
+              message.innerHTML = "Wrong credentials";
+              
+            } else {
+              name.value= data.employee_name
+              grade.value= data.grade;
+              managerName.value= data.manager_name;
+              divisionHead.value= data.division_head_name;
+              department.value= data.department;
+              subDepartment.value= data.sub_department;
+              designation.value= data.designation;
+              currentLocation.value= data.current_location;
+              lastPromotionDate.value= data.last_promotion_date;
+              employeeAge.value= data.dob;
+              nsdcExperience.value= data.current_location;
+              externalExperience.value= data.external_experience;
+              totalExperience.value= data.total_experience;
+              previousCareerHistory.value= data.previous_career_history;
+              qualification.value= data.qualification;
+              Impactoflose.value= data.impact_of_loss;
+              Risk.value= data.attrition_risk;
+              Critically.value= data.criticality_of_role;
+              Ability.value= data["potential_-_ability"];
+              Aspiration.value= data["potential_-_aspiration"];
+              Alignment.value= data["potential_-_alignment"];
+              Agility.value= data["potential_-_agility"];
+
+              Promotion.value= data.promotion.toUpperCase();
+              JobEnlargement.value= data.job_enlargement.toUpperCase();
+              FutureRisk.value= data.potential_future_roles;
+
+              
+              
+              
+
+
+
+
+
+
+
+
+              actionforRole.value = data.action_required;
+              possibleGrade.value = data.possible_grade;
+
+              FY2021.value= data.previous_performance_history_2021;
+              FY2022.value= data.previous_performance_history_2022;
+              FY2023.value= data.performance_history_2023;
+
+
+  //             // Dynamically add the option "0-6 Months" to the select element
+  // const optionElement = document.createElement('option');
+  // optionElement.textContent = data.readiness_future_roles;
+  // readiness.appendChild(optionElement);
+
+              readiness.value = data.readiness_future_roles.replace(" - ", '-').replace(" to ", "-");
+              // readiness.value = "0-6 Months";
+              console.log( "readiness.value", data.readiness_future_roles.replace(" - ", '-').replace(" to ", "-"))
+
+              cashSuccessor.value= data.crash_successor;
+              potentialSuccessor.value= data.potential_successors_1+ " & "+ data.potential_successors_2;
+              successorReadiness.value= data.readiness_of_successor_1+ " & "+  data.readiness_of_successor_2;
+              Strengths.value =  data.strengths;
+              Achievements.value =  data.key_achievements;
+              Initiatives.value =  data.key_initiatives;
+              functional.value =  data["development_areas_-_functional"];
+              Behavioral.value =  data["development_areas_-_behavioural"];
+              comments.value =  data["overall_comments"];
+
+
+
+              
+
+
+
+
+          
+
+            }
+          })
+    } catch (error) {
+      console.error('Error:', error.message);
+    }
+
+
+
+
+
+
+
+    
+  // Add an event listener to the "Update" button
+  const updateButton = document.querySelector('#btn-update');
+  updateButton.addEventListener('click', async function () {
+    // Get the updated values from the form fields
+    const updatedData = {
+      employee_name: name.value,
+      grade: grade.value,
+      manager_name: managerName.value,
+      division_head_name: divisionHead.value,
+      department: department.value,
+      sub_department: subDepartment.value,
+      designation: designation.value,
+      current_location: currentLocation.value,
+      last_promotion_date: lastPromotionDate.value,
+      dob: employeeAge.value,
+      nsdc_experience: nsdcExperience.value,
+      external_experience: externalExperience.value,
+      total_experience: totalExperience.value,
+      previous_career_history: previousCareerHistory.value,
+      qualification: qualification.value,
+      impact_of_loss: Impactoflose.value,
+      attrition_risk: Risk.value,
+      criticality_of_role: Critically.value,
+      "potential_-_ability": Ability.value,
+     "potential_-_aspiration": Aspiration.value,
+     "potential_-_alignment": Alignment.value,
+     "potential_-_agility": Agility.value,
+      promotion: Promotion.value.toUpperCase(),
+      job_enlargement: JobEnlargement.value.toUpperCase(),
+      potential_future_roles: FutureRisk.value,
+      action_required: actionforRole.value,
+      possible_grade: possibleGrade.value,
+      previous_performance_history_2021: FY2021.value,
+      previous_performance_history_2022: FY2022.value,
+      performance_history_2023: FY2023.value,
+      readiness_future_roles: readiness.value,
+      crash_successor: cashSuccessor.value,
+      potential_successors_1: potentialSuccessor.value.split(' & ')[0],
+      potential_successors_2: potentialSuccessor.value.split(' & ')[1],
+      readiness_of_successor_1: successorReadiness.value.split(' & ')[0],
+      readiness_of_successor_2: successorReadiness.value.split(' & ')[1],
+      strengths: Strengths.value,
+      key_achievements: Achievements.value,
+      key_initiatives: Initiatives.value,
+      "development_areas_-_functional": functional.value,
+      "development_areas_-_behavioural": Behavioral.value,
+      overall_comments: comments.value,
+    };
+
+    // Send a request to update the data
+    try {
+      const response = await fetch(`/employee/updateEmployee/?employeeId=${employeeId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedData),
+      });
+
+      const result = await response.json();
+      const updateMessage = document.getElementById('updateMessage');
+      updateMessage.innerHTML = "Updated Succesfully"
+      console.log('Update Result:', result);
+
+      // Handle the update result as needed
+    } catch (error) {
+      updateMessage.innerHTML = "Failed To Update"
+      console.error('Update Error:', error.message);
+    }
+  });
+});
+
+
+
+
+
+
+
+
+      
+
+   </script>
+  </body>
+</html> 
+ 

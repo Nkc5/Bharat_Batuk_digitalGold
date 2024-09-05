@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Performance vs Potential</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    canvas {
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="scatterPlot" width="400" height="400"></canvas>
+
+  <script>
+    // Data
+    const data = [
+      { performance: 2, potential: 3, label: "Low Performance and High Potential" },
+      { performance: 3, potential: 3, label: "Medium Performance and High Potential" },
+      { performance: 4, potential: 3, label: "High Performance and High Potential" },
+      { performance: 2, potential: 2, label: "Low Performance and Medium Potential" },
+      { performance: 3, potential: 2, label: "Medium Performance and Medium Potential" },
+      { performance: 4, potential: 2, label: "High Performance and Medium Potential" },
+      { performance: 2, potential: 1, label: "Low Performance and Low Potential" },
+      { performance: 3, potential: 1, label: "Medium Performance and Low Potential" },
+      { performance: 4, potential: 1, label: "High Performance and Low Potential" },
+    ];
+
+    // Get the canvas element and its context
+    const canvas = document.getElementById('scatterPlot');
+    const ctx = canvas.getContext('2d');
+
+    // Scale the data to fit the canvas
+    const scaleX = performance => performance * 50; // Adjust the scaling factor as needed
+    const scaleY = potential => canvas.height - potential * 50; // Adjust the scaling factor as needed
+
+    // Draw axes
+    ctx.beginPath();
+    ctx.moveTo(0, canvas.height);
+    ctx.lineTo(canvas.width, canvas.height);
+    ctx.moveTo(0, 0);
+    ctx.lineTo(0, canvas.height);
+    ctx.stroke();
+
+    // Draw data points
+    data.forEach(point => {
+      const x = scaleX(point.performance);
+      const y = scaleY(point.potential);
+
+      ctx.beginPath();
+      ctx.arc(x, y, 5, 0, 2 * Math.PI);
+      ctx.fillStyle = 'blue';
+      ctx.fill();
+    });
+
+    // Add labels
+    ctx.fillStyle = 'black';
+    ctx.font = '12px Arial';
+    data.forEach(point => {
+      const x = scaleX(point.performance) + 10;
+      const y = scaleY(point.potential) - 5;
+      ctx.fillText(point.label, x, y);
+    });
+  </script>
+</body>
+</html>

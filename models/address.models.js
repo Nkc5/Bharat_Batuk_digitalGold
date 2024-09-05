@@ -1,33 +1,38 @@
-const mongoose=require('mongoose')
+const mongoose = require('mongoose')
 
 // delievery address
-const addressSchema=new mongoose.Schema({
+const addressSchema = new mongoose.Schema({
   id: {
     type: String,
     default: null
-  },   
-  city:String,
-  country:String,
-  customerRefNo:{
+  },
+  city: String,
+  country: String,
+  mmtc_customer_ref: {
     type: String,
     default: null
   },
-  usercustomerRefNo: String,
-  line1:String,
-  line2:String,
-  mobileNumber:String,
-  name:String,
-  state:String,
-  statecode:String,
-  type:String,
-  zip:String,
- "is_deleted":{
+  userAddressId: {
+    type: String,
+    default: null
+  },
+  userAccountId: String,
+  customerRefNo: String,
+  line1: String,
+  line2: String,
+  mobileNumber: String,
+  name: String,
+  state: String,
+  statecode: String,
+  type: String,
+  zip: Number,
+  "is_deleted": {
     type: Number,
-    default: false
+    default: 0
   }
 
 })
 
-const addressModel = mongoose.model('address',addressSchema);
+const addressModel = mongoose.model('address', addressSchema);
 
-module.exports=addressModel;
+module.exports = addressModel;

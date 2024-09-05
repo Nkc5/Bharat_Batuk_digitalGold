@@ -2,9 +2,18 @@
 const { v4: uuidv4 } = require('uuid');
 const validator = require('validator');
 const tradeMmtc = require('../mmtcApi/trade.controller');
+const userMmtc = require('../mmtcApi/user.controller');
+const userModel = require('../../models/user.models.js')
+const bankModel = require('../../models/bank.models.js')
 const mmtcSellResponse = require('../../models/mmtc_sell_response.models.js');
 const mmtcSellRequest = require('../../models/mmtc_sell_request.models.js');
+const mmtcBuyResponseModel = require('../../models/mmtc_buy_response.models.js');
+const mmtcBuyRequestModel = require('../../models/mmtc_buy_request.models.js');
+const NodeMailer = require('./nodeMailer.controller.js');
+const axios = require('axios');
+const fs = require('fs');
 
+var tax3AmtSell;
 
 
 
@@ -12,99 +21,166 @@ const mmtcSellRequest = require('../../models/mmtc_sell_request.models.js');
 class tradeSellController {
 
 
-    static customerRefNo;
-    static transactionRefNo = uuidv4();
-    static billingAddressId
-    static currencyPair
-    static value
-    static type
-    static calculationType;
-    static transactionOrderID;
-    static transactionDate;
-    static totalAmount;
-    static quantity;
-    static transactionId;
-    static quoteValidityTime
-    static taxType;
-    static tax1Amt;
-    static tax2Amt;
-    static tax3Amt;
-    static tax1Perc;
-    static tax2Perc;
-    static preTaxAmount;
-    static taxAmount;
-    static quoteId;
-    static createdAt;
-    static executionDateTime;
-    static customerName
+    static vpaValidate = async (req, res) => {
+
+        const { vpaId } = req.body;
+
+        console.log("vpaId", vpaId);
+
+        try {
+
+
+            const response = await tradeMmtc.vpaValidate({ vpaId }, res)
+
+            console.log("response", response);
+
+            return res.json({
+                "error": false,
+                "message": "",
+                "data": [response]
+            })
+
+        } catch (error) {
+            console.log(error)
+
+            return res.json({
+                "error": true,
+                "message": error,
+                "data": []
+            })
+
+        }
 
 
 
+    }
+
+
+
+    //getQuoteSell: completed
 
     static sell = async (req, res) => {
 
-        const customerRefNo = req.user._id.toString();
+        var customerRefNo = req.user._id.toString();
+
+        const mmtcCustRef = req.user.mmtc_customer_ref;
+
+        if (!mmtcCustRef) {
+            customerRefNo = "65b8d31285d86e81e770f30f"
+        }
+
+        const transactionRefNo = uuidv4();
+
         console.log(customerRefNo)
 
-        this.currencyPair = req.body.currencyPair;
-        this.value = req.body.value;
-        this.type = req.body.type;
+        var { currencyPair, value, type } = req.body;
+        const sellType = type;
 
-        console.log(typeof this.currencyPair)
+        const data1 = { customerRefNo, currencyPair, transactionRefNo, value, type }
+
+        console.log("getQuoteSell", data1);
+
+        // seven days
+        const sevenDaysAgo = new Date();
+        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+        try {
+
+            const dbQuantity = await mmtcBuyResponseModel.aggregate([
+                {
+                    $match: {
+                        customerRefNo: customerRefNo
+                    }
+                },
+                {
+                    $group: {
+                        _id: "$customerRefNo",
+                        totalQuantityBefore: {
+                            $sum: {
+                                $cond: [
+                                    { $lt: ["$createdAt", sevenDaysAgo.toISOString()] },
+                                    { $toDouble: "$quantity" },
+                                    0
+                                ]
+                            }
+                        },
+                        totalAmountBefore: {
+                            $sum: {
+                                $cond: [
+                                    { $lt: ["$createdAt", sevenDaysAgo.toISOString()] },
+                                    { $toDouble: "$totalAmount" },
+                                    0
+                                ]
+                            }
+                        }
+                    }
+                }
+            ]);
 
 
-        const data1 = { currencyPair: this.currencyPair, value: this.value, type: this.type, customerRefNo, transactionRefNo: this.transactionRefNo }
-        console.log(data1)
+            const totalQuantityBefore = dbQuantity[0].totalQuantityBefore;
+            const totalAmountBefore = dbQuantity[0].totalAmountBefore;
+
+            // if((type ==='Q' && Number(value) > dbQuantity[0].totalQuantityBefore) || (type ==='A' && Number(value) > dbQuantity[0].totalAmountBefore)){
+            //     return res.status(400).json({
+            //         error: true,
+            //         message: `can't sell more than ${type ==='Q'?totalQuantityBefore +' quantity': totalAmountBefore + ' amount'}`,
+            //         data: []
+            //     })
+            // }
+
+        }
+        catch (error) {
+            console.log("error", error)
+        }
+
+
 
 
         /*   validation for isEmpty & isString  */
 
 
         if (typeof customerRefNo !== 'string') {
-            return res.status(500).json({
+            return res.status(400).json({
                 "error": true,
                 "message": "customerRefNo should be in string",
-                "data": null
+                "data": []
             });
         }
 
 
         if (typeof currencyPair !== 'string') {
-            return res.status(500).json({
+            return res.status(400).json({
                 "error": true,
                 "message": "currencyPair should be in string",
-                "data": null
+                "data": []
             });
         }
 
 
         if (typeof value !== 'string') {
-            return res.status(500).json({
+            return res.status(400).json({
                 "error": true,
                 "message": "value should be in string",
-                "data": null
+                "data": []
             });
         }
 
 
         if (typeof type != 'string') {
-            return res.status(500).json({
+            return res.status(400).json({
                 "error": true,
                 "message": "type should be in string",
-                "data": null
+                "data": []
             });
         }
-
-
-
-
 
 
         if (validator.isEmpty(customerRefNo)) {
             return res.status(400).json({
                 error: true,
                 message: "customerRefNo must not be empty",
-                data: null
+                data: []
             });
         }
 
@@ -114,7 +190,7 @@ class tradeSellController {
             return res.status(400).json({
                 error: true,
                 message: "currencyPair must not be empty",
-                data: null
+                data: []
             });
         }
 
@@ -124,7 +200,7 @@ class tradeSellController {
             return res.status(400).json({
                 error: true,
                 message: "value must not be empty",
-                data: null
+                data: []
             });
         }
 
@@ -134,41 +210,36 @@ class tradeSellController {
             return res.status(400).json({
                 error: true,
                 message: "type must not be empty",
-                data: null
+                data: []
             });
         }
-
-
 
         //getQuoteSell
 
-
-
-        const response = await tradeMmtc.getQuoteSell(data1, res)
-        console.log(response)
         try {
-            ({
-                totalAmount: this.totalAmount, quantity: this.quantity, quoteValidityTime: this.quoteValidityTime, taxType: this.taxType, tax1Amt: this.tax1Amt, tax2Amt: this.tax2Amt, tax3Amt: this.tax3Amt, tax1Perc: this.tax1Perc, tax2Perc: this.tax2Perc, preTaxAmount: this.preTaxAmount, taxAmount: this.taxAmount, quoteId: this.quoteId, createdAt: this.createdAt
-            } = response);
 
+            var response = await tradeMmtc.getQuoteSell(data1, res)
             await mmtcSellRequest.create(data1);
             await mmtcSellResponse.create({ ...response, customerRefNo });
 
+            console.log(" sell:    { ...response, transactionRefNo, sellType }", { ...response, transactionRefNo, sellType })
+
             return res.json({
                 "error": false,
                 "message": "success",
-                "data": [response]
+                "data": [{ ...response, transactionRefNo, sellType }]
             });
         }
         catch (error) {
-            error = JSON.parse(error.message);
-            const errorReason = error.reason;
-            const errorCode = error.code;
+            console.log(error)
+            const errorMessage = JSON.parse(error.message);
+            const errorReason = errorMessage.reason;
+            const errorCode = errorMessage.code;
 
             return res.json({
                 "error": true,
                 "message": errorReason,
-                "data": null,
+                "data": [],
                 "code": errorCode
             })
         }
@@ -179,49 +250,101 @@ class tradeSellController {
 
 
 
-    //executeSell
+    //executeSell :  completed
     static executeSell = async (req, res) => {
-        const customerRefNo = req.user._id.toString();
-
-        this.calculationType = this.type;
-        this.transactionDate = this.createdAt;
-        this.transactionOrderID = this.transactionRefNo;
+        var customerRefNo = req.user._id.toString();
 
 
-        const otp = "123";
-        const payOut = {
-            "customerAccountInfo": {
-                "name": "my Kumar",
-                "accountNumber": "441750926792",
-                "ifsc": "SBI0019",
-                "vpa": "abhijeet@paytm"
-            },
-            "paymentChannel": "UPI"
+        const user = await userModel.findOne({ _id: customerRefNo });
+
+
+
+        var { preTaxAmount, quantity, quoteId, tax1Amt, tax2Amt, tax3Amt, createdAt, totalAmount, transactionRefNo, sellType } = req.body;
+
+        console.log("req, body");
+
+        const calculationType = sellType;
+        const transactionDate = createdAt;
+        const transactionOrderID = transactionRefNo
+
+
+
+        const bank = await bankModel.findOne({ customerRefNo }).sort({ _id: -1 });
+        console.log("bank", bank)
+        if (bank && bank.msg.account_no && bank.msg.ifsc) {
+            var ifsc = bank.msg.ifsc;
+            var account_no = bank.msg.account_no;
+        }
+        else {
+            // demo
+            var ifsc = "SBIN001998"
+            var account_no = "11232321117812"
         }
 
-        const data1 = { calculationType: this.calculationType, customerRefNo, otp, payOut, preTaxAmount: this.preTaxAmount, quantity: this.quantity, quoteId: this.quoteId, tax1Amt: this.tax1Amt, tax2Amt: this.tax2Amt, transactionDate: this.transactionDate, transactionOrderID: this.transactionOrderID, totalAmount: this.totalAmount };
+
+        // below are mandatory
+        const otp = "";
+        // Allowed payment channels - UPI, ACCOUNT :   "UPI/RTGS/NEFT/IMPS"
+        const payOut = {
+            customerAccountInfo: {
+                "name": user.name,
+                "accountNumber": account_no,
+                "ifsc": ifsc
+            },
+            paymentChannel: "NEFT"
+        }
+
+        // const payOut = {
+        //     customerAccountInfo: {
+        //         "name": name,
+        //         "accountNumber": "",
+        //         "ifsc": "",
+        //         "vpa": "abhijeet@paytm"
+        //     },
+        //     "paymentChannel": "UPI"  
+        // }
+
+        const data1 = {
+            calculationType, customerRefNo, otp, payOut, preTaxAmount, quantity, quoteId, tax1Amt, tax2Amt, transactionDate, transactionOrderID, totalAmount, taxAmount: "0.00", tax1Perc: "0.00", tax2Perc: "0.00"
+        };
+
+        const data2 = {...req.body, payOut, calculationType, transactionDate, transactionOrderID, otp};
+
+
+        console.log("data1", data1);
 
 
         try {
-            const response = await tradeMmtc.executeOrderWithPayOut(data1, res);
-            // await mmtcSellRequest.findOne({customerRefNo, transactionOrderID}, data1)
-            // await mmtcSellResponse.findOne({customerRefNo, transactionOrderID}, response)
+            var response = await tradeMmtc.executeOrderWithPayOut(data1, res);
+            await mmtcSellRequest.findOneAndUpdate({ $and: [{ customerRefNo }, { transactionRefNo }] }, { ...data1 })
+            await mmtcSellResponse.findOneAndUpdate({ $and: [{ customerRefNo }, { quoteId }] }, { ...response })
+
+            console.log("response", response)
+
+
+
+
+            //generateBSellPdfInvoice
+            var returnedPDF = await tradeSellController.generateSellPdfInvoice(req, res, response);
+
+
 
             return res.json({
                 "error": false,
                 "message": "success",
-                "data": [response]
+                "data": [returnedPDF]
             })
 
         } catch (error) {
-            error = JSON.parse(error.message);
-            const errorReason = error.reason;
-            const errorCode = error.code;
+            console.log(error)
+            const errorMessage = JSON.parse(error.message);
+            const errorReason = errorMessage.reason;
+            const errorCode = errorMessage.code;
 
             return res.json({
                 "error": true,
                 "message": errorReason,
-                "data": null,
+                "data": [],
                 "code": errorCode
             })
 
@@ -229,6 +352,68 @@ class tradeSellController {
     }
 
 
+
+
+
+    static generateSellPdfInvoice = async (req, res, executeResponse) => {
+
+        const customerRefNo = req.user._id.toString();
+        const transactionId = executeResponse.transactionId;
+
+        console.log("transactionId", transactionId);
+
+        try {
+
+
+            var response = await tradeMmtc.generateSellPdfInvoice({ transactionId }, res)
+
+
+
+
+            const folderPath = `public/uploads/invoice/${customerRefNo}/sell`;
+
+            // Check if the folder already exists
+            if (!fs.existsSync(folderPath)) {
+                fs.mkdirSync(folderPath);
+                console.log('sell Folder successfully');
+            }
+
+
+
+            // Decode base64 string
+            const binaryString = Buffer.from(response, 'base64');
+
+            // Specify the path to the public/uploads folder
+            const filePath = `public/uploads/invoice/${customerRefNo}/sell/${transactionId}.pdf`;
+
+            // Write the binary data to a file
+            fs.writeFileSync(filePath, binaryString);
+
+            console.log(`File saved at: ${filePath}`);
+
+            const sellResponse = await mmtcSellResponse.findOneAndUpdate({ transactionId: transactionId }, { invoicePDF: filePath }, { new: true })
+
+            console.log("sellResponse", sellResponse);
+
+            const newFilePath = filePath.replace('public', "");
+
+
+
+            // sending email through nodemailer;
+            executeResponse.invoicePDF = newFilePath;
+            await NodeMailer.toSendEmail(req, res, "sell", req.user, executeResponse);
+
+            return executeResponse;
+
+
+        } catch (error) {
+            console.log(error)
+            return;
+        }
+
+
+
+    }
 
 }
 

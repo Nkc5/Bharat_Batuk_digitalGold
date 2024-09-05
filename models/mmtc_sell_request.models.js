@@ -19,6 +19,7 @@ const sellReqSchema = new mongoose.Schema({
     "transactionDate": String,
     "transactionOrderID": String,
     "totalAmount": String,
+    "vpa": String
     
 })
 

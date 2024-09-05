@@ -28,6 +28,9 @@ const sellResSchema = new mongoose.Schema({
     "billingAddressId": String,
     "invoiceId": String,
     "settlementInfo": Object,
+    "vpa": String,
+    "invoicePDF": String,
+    "rezorpayTid": String
 
 })
 

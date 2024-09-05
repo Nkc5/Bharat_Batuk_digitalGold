@@ -1,6 +1,6 @@
 
 
-const {getUser} = require('../service/jwtAuth'); 
+const {getUser} = require('../utils/jwtAuth'); 
 const userModel = require('../models/user.models.js')
 
 // let reqUserToken = "";
@@ -22,12 +22,12 @@ async function restrictToLoggedInUserOnly(req, res, next){
     }
 
     const user = await getUser(res, token);
-    if(!user){ 
-        // console.log("No user exists in given token!, Please login(navigate to login page)")
-        return res.json("No user exists in given token!, Please login(navigate to login page)")
-    }
-    // console.log("user get from token", user)
+    // if(!user){ 
+    //     // console.log("No user exists in given token!, Please login(navigate to login page)")
+    //     return res.json("No user exists in given token!, Please login(navigate to login page)")
+    // }
     req.user = user;
+    console.log("req.user from restrict to auth", req.user);
     reqUserToken = req.user;
     next(); 
 

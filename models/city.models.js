@@ -4,26 +4,27 @@ const mongoose = require('mongoose');
 
 const citySchema = new mongoose.Schema({
     id: {
-        type : Number
+        type: Number
     },
 
-    name : {
+    city_name: {
         type: String
     },
 
-    country_id : {
-        type: Number
+    country_id: {
+        type: String
     },
-    state_id:{
-        type: Number
+    state_id: {
+        type: String
     },
     status: {
         type: Number,
         default: 1
     },
-    district_name: String,
-    
-    distric_code: Number
+    // district_name: String,
+
+    // district_code: String,
+    // city_code: Number
 
 })
 

@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login/Register Form Demo</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <link href='https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+<!-- Data Table CSS -->
+<link rel='stylesheet' href='https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css'>
+<!-- Font Awesome CSS -->
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css'>
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"> </script>  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"> </script>  
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"> </script>  
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css">  
+  <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"> </script>  
+   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" >  
+    <style>
+      #btn{
+        align-items: center;
+        margin-right: auto;
+
+      }
+
+
+
+
+
+           .nav-pills .nav-item .nav-link.active,
+.nav-pills .nav-item .nav-link:focus {
+    background-color: gray;
+    color: black;
+    width: auto;
+   
+}
+        /* Add your custom styles here */
+        .register-style {
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        #one{
+            margin-left: -60px;
+        }
+        #new{
+            overflow: hidden;
+        }
+        .wrapper {
+    margin-top: 5vh;
+  }
+ 
+  .dataTables_filter {
+    float: right;
+  }
+ 
+  .table-hover > tbody > tr:hover {
+    background-color: #ccffff;
+  }
+ 
+  @media only screen and (min-width: 768px) {
+    .table {
+      table-layout: fixed;
+      max-width: 100% !important;
+    }
+  }
+ 
+  thead {
+    background: #ddd;
+  }
+ 
+  .table td:nth-child(2) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+ 
+  .highlight {
+    background: #ffff99;
+  }
+ 
+  @media only screen and (max-width: 767px) {
+    /* Force table to not be like tables anymore */
+    table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
+      display: block;
+    }
+ 
+    /* Hide table headers (but not display: none;, for accessibility) */
+    thead tr,
+  tfoot tr {
+      position: absolute;
+      top: -9999px;
+      left: -9999px;
+    }
+ 
+    td {
+      /* Behave  like a "row" */
+      border: none;
+      border-bottom: 1px solid #eee;
+      position: relative;
+      padding-left: 50% !important;
+    }
+ 
+    td:before {
+      /* Now like a table header */
+      position: absolute;
+      /* Top/left values mimic padding */
+      top: 6px;
+      left: 6px;
+      width: 45%;
+      padding-right: 10px;
+      white-space: nowrap;
+    }
+ 
+    .table td:nth-child(1) {
+      background: #ccc;
+      height: 100%;
+      top: 0;
+      left: 0;
+      font-weight: bold;
+    }
+ 
+    /*
+    Label the data
+    */
+    td:nth-of-type(1):before {
+      content: "Name";
+    }
+ 
+    td:nth-of-type(2):before {
+      content: "Position";
+    }
+ 
+    td:nth-of-type(3):before {
+      content: "Office";
+    }
+ 
+    td:nth-of-type(4):before {
+      content: "Age";
+    }
+ 
+    td:nth-of-type(5):before {
+      content: "Start date";
+    }
+ 
+    td:nth-of-type(6):before {
+      content: "Salary";
+    }
+ 
+    .dataTables_length {
+      display: none;
+    }
+  }
+    </style>
+</head>
+<body>
+
+    <div class="container-fluid">
+        <div class="row flex-nowrap">
+            <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-secondary " >
+                <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100" style="position: sticky; top: 0;">
+                    <a href="#" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none" >
+                        <span class="fs-5 d-none d-sm-inline" >
+                          <h2 class="mt-2" id="company_name">Company Name</h2> <br> <br>
+                           
+                    </a>
+                    <!-- Add "Register" button -->
+                 
+                 
+                 
+
+                    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+                       
+
+                      <li class="nav-item">
+                        <a href="#" class="nav-link align-middle px-0">
+                          <i class='bx bx-grid-alt nav__icon ' ></i><span class="ms-1 d-none d-sm-inline text-white"  onclick="blank()"> 
+                           Dashboard</span>
+                        </a>
+                    </li>
+
+
+                        <!-- Add "Register" menu item -->
+                        <li class="nav-item">
+                            <a href="#" class="nav-link align-middle px-0" onclick="applyRegisterContent()">
+                                <i class="bi bi-file-earmark-arrow-up"></i> <span class="ms-1 d-none d-sm-inline text-white"> 
+                                    Upload Data</span></span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link align-middle px-0" onclick="applyHomeContent()">
+                              <i class="bi bi-table"></i> <span class="ms-1 d-none d-sm-inline text-white">
+                                     Employee data
+                            </a>
+                        </li>
+                        <li class="logout" style="margin-top: 300px; cursor: pointer;"  onclick="logout()">
+                            <i class='bx bx-log-out nav__icon' ></i>
+                         <a>  Logout</a> 
+                        </li>
+                    </ul>
+                    <hr>
+                    <div class="dropdown pb-4">
+                        <!-- ... rest of the dropdown ... -->
+                    </div>
+                </div>
+            </div>
+            <div id="new" class="col py-3 my-5 mb-4" style="width: 74vw;">
+               
+            </div>
+        </div>
+    </div>
+
+    <!-- <script src="script.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src='https://code.jquery.com/jquery-3.7.0.js'></script>
+    <!-- Data Table JS -->
+    <script src='https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js'></script>
+    <script src='https://cdn.datatables.net/responsive/2.1.0/js/dataTables.responsive.min.js'></script>
+    <script src='https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js'></script>
+    <script src='https://code.jquery.com/jquery-3.7.0.js'></script>
+<!-- Data Table JS -->
+<script src='https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js'></script>
+<script src='https://cdn.datatables.net/responsive/2.1.0/js/dataTables.responsive.min.js'></script>
+<script src='https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js'></script>
+
+
+
+    <script>
+
+
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+
+    console.log("DOM Content Loaded");
+
+  var currentUrl = new URL(window.location.href);
+  
+  console.log("currentUrl", currentUrl);
+
+
+  // Check if searchParams is available
+  if (currentUrl.searchParams) {
+    var companyName = currentUrl.searchParams.get('companyName');
+    
+    const company_name = document.getElementById('company_name');
+      company_name.innerHTML = companyName;
+    
+  } else {
+    console.error("URLSearchParams is not supported.");
+  }
+});
+
+
+
+      function blank(){
+  var newElement = document.getElementById("new");
+  newElement.innerHTML = ``
+  newElement.className = ""; 
+}
+        $(document).ready(function() {
+    $('#example').DataTable({
+
+         // Enable responsive mode
+         responsive: true,
+
+      //disable sorting on last column
+      "columnDefs": [
+        { "orderable": false, "targets": 5 }
+      ],
+      language: {
+        //customize pagination prev and next buttons: use arrows instead of words
+        'paginate': {
+          'previous': '<span class="fa fa-chevron-left"></span>',
+          'next': '<span class="fa fa-chevron-right"></span>'
+        },
+        //customize number of elements to be displayed
+        // "lengthMenu": 'Display <select class="form-control input-sm">'+
+        // '<option value="5">8</option>'+
+        // '<option value="20">20</option>'+
+        // '<option value="30">30</option>'+
+        // '<option value="40">40</option>'+
+        // '<option value="50">50</option>'+
+        // '<option value="-1">All</option>'+
+        // '</select> results'
+      }
+    })  
+
+     // Remove the DataTable wrapper's max-width to allow it to expand
+     $('#example_wrapper').css('max-width', 'none');
+
+} );
+    
+
+
+
+
+// make class active
+
+$(document).ready(function() {
+    // Handle menu item click
+    $('.nav-item').on('click', function() {
+        // Remove active class from all menu items
+        $('.nav-item').removeClass('active');
+
+        // Add active class to the clicked menu item
+        $(this).addClass('active');
+    });
+});
+
+
+
+
+    function applyHomeContent() {
+    // Set content for the "Home" button
+    var newElement = document.getElementById("new");
+    newElement.innerHTML = `
+        <table id="example" class="table table-striped " style="width:100%" >
+         <button class="btn btn-success btn-sm mt-5 mb-2" style="float:right"  onclick="downloadExcelFile()">  <i class="bi bi-download"> </i> Excel</button>
+          
+            <br>
+            <br>
+            <thead>
+                <tr>
+                    <th>S.no</th>
+                    <th>Employee ID</th>
+                    <th>Profile Photo</th>
+                    <th>Employee Name</th> 
+                    <th>Department</th>
+                    <th>Overall Performance</th>
+                    <th>Overall Potential</th>
+                    <th></th>
+                    <th>Actions</th>
+                    <th></th>
+  
+                </tr>
+            </thead>
+            <tbody id="employeeTableBody">
+            </tbody>
+        </table>
+    `;
+    newElement.className = ""; // Reset class
+
+    // Fetch data from the server and update the DataTable
+    fetch('/employee/tableData')
+        .then(response => response.json())
+        .then(data => {
+            // Clear existing rows
+            $('#employeeTableBody').empty();
+
+             // Counter for serial number
+             let serialNumber = 0;
+             
+            // Add new rows to the DataTable
+            data.slice(1).forEach(employee => {
+
+
+              //potential
+              var ability = `${employee['potential_-_ability']}`;
+              var aspiration = `${employee['potential_-_aspiration']}`
+              var alignment = `${employee['potential_-_alignment']}`
+              var agility = `${employee['potential_-_agility']}`;
+
+              // console.log("ability || aspiration || alignment || agility", ability, aspiration, alignment, agility)
+
+if(ability || aspiration || alignment || agility){
+  ability = (ability === "High") ? 3 : (ability === "Medium") ? 2 : (ability === "Low") ? 1 : 0;
+  aspiration = (aspiration === "High") ? 3 : (aspiration === "Medium") ? 2 : (aspiration === "Low") ? 1 : 0;
+  alignment = (alignment === "High") ? 3 : (alignment === "Medium") ? 2 : (alignment === "Low") ? 1 : 0;
+  agility = (agility === "High") ? 3 : (agility === "Medium") ? 2 : (agility === "Low") ? 1 : 0;
+}
+
+// console.log("ability || aspiration || alignment || agility", ability, aspiration, alignment, agility)
+
+
+var result = [ability, aspiration, alignment, agility]
+// console.log("array", result)
+var count=0;
+result.forEach((res)=>{
+  if(res!=0){
+    count+=1
+    // console.log("array count", count)
+  }
+})
+
+// console.log("count", count)
+if(count!=0){
+  var averagePotential = Math.round((ability+ aspiration+ alignment+ agility)/count)
+
+}
+// console.log("averagePotential", averagePotential)
+
+
+
+              //performance
+              var FY2023 = `${employee["performance_history_2023"]}`;
+              var FY2022 = `${employee['previous_performance_history_2022']}`
+              var FY2021 = `${employee['previous_performance_history_2021']}`
+
+
+              
+              console.log("FY2023 || FY2022 || FY2021", FY2023, FY2022, FY2021)
+
+if(FY2023 || FY2022 || FY2021){
+  FY2023 = (FY2023 === "High") ? 3 : (FY2023 === "Medium") ? 2 : (FY2023 === "Low") ? 1 : 0;
+  FY2022 = (FY2022 === "High") ? 3 : (FY2022 === "Medium") ? 2 : (FY2022 === "Low") ? 1 : 0;
+  FY2021 = (FY2021 === "High") ? 3 : (FY2021 === "Medium") ? 2 : (FY2021 === "Low") ? 1 : 0;
+}
+
+
+console.log("FY2023, FY2022, FY2021", FY2023, FY2022, FY2021)
+var result2 = [FY2023, FY2022, FY2021]
+console.log("array2", result2)
+var count2=0;
+result2.forEach((res)=>{
+  if(res!=0){
+    count2+=1
+    // console.log("array count", count)
+  }
+})
+
+console.log("count2", count2)
+
+function customRound(value) {
+    var roundedValue = Math.ceil(value);
+    if (value % 1 === 0.5) {
+        return Math.floor(value);
+    } else {
+        return roundedValue;
+    }
+}
+
+
+
+
+if(count2!=0){
+  // var averagePerformance = Math.round((FY2023+ FY2022+ FY2021)/count2)
+
+var averagePerformance = customRound((FY2023+ FY2022+ FY2021)/count2)
+
+
+}
+console.log("averagePerformance", averagePerformance)
+
+let buttonText, buttonText2;
+if (averagePotential >= 0 && averagePotential <= 1) {
+        buttonText = "Low";
+    } else if (averagePotential > 1 && averagePotential <= 2) {
+        buttonText = "Medium";
+    } else if (averagePotential > 2 && averagePotential <= 3) {
+        buttonText = "High";
+    } else {
+        buttonText = "N/A";
+    }
+
+
+    if (averagePerformance >= 0 && averagePerformance <= 1) {
+        buttonText2 = "Low";
+    } else if (averagePerformance > 1 && averagePerformance <= 2) {
+        buttonText2 = "Medium";
+    } else if (averagePerformance > 2 && averagePerformance <= 3) {
+        buttonText2 = "High";
+    } else {
+        buttonText2 = "N/A";
+    }
+
+  
+
+    console.log("buttonTextNew", buttonText)
+    console.log("buttonTextNew2", buttonText2)
+
+
+if(count !=0 && count2 !==0){
+  var potPer = `${averagePotential}_${averagePerformance}`
+}
+else{
+  var potPer= "0"
+}
+
+// console.log("potPer", potPer)
+
+                             serialNumber++;
+
+                             // image path
+                             const imagePath = `/images/${employee.external_id}.jpeg`;
+
+                $('#employeeTableBody').append(`
+                    <tr>
+                        <td>${serialNumber}</td>
+                        <td>${employee.external_id}</td>
+                        <td><img src="${imagePath}" alt="Profile Image" style="max-width: 100px; max-height: 100px;"></td>
+                        <td>${employee.employee_name}</td>
+                        <td>${employee.department}</td>
+                        <td>${buttonText2? buttonText2:" N/A"}</td>
+                        <td>${buttonText? buttonText:" N/A"}</td>
+                        <td><button class="viewEmpMatrics btn btn-primary" data-employee-id="${employee.external_id}"  data-pot-per="${potPer}">Matrics</button></td>
+                        <td><button class="viewUneditable btn btn-primary " data-employee-id="${employee.external_id}">view</button></td>
+                        <td><button class="viewEmpData btn btn-primary " data-employee-id="${employee.external_id}">Edit</button></td>
+                    </tr>
+                `);
+            });
+
+
+             // Initialize or redraw the DataTable
+             $('#example').DataTable().destroy();
+            $('#example').DataTable();
+
+          
+
+
+// Add event listener using event delegation
+// $('#example').on('click', '.viewOverallPotential', function() {
+//     var employeeId = $(this).data('employee-id');
+//     var averagePotential = parseFloat($(this).data('average-potential'));
+
+//     let buttonText;
+//     if (averagePotential >= 0 && averagePotential <= 1) {
+//         buttonText = "Low";
+//     } else if (averagePotential > 1 && averagePotential <= 2) {
+//         buttonText = "Medium";
+//     } else if (averagePotential > 2 && averagePotential <= 3) {
+//         buttonText = "High";
+//     } else {
+//         buttonText = "N/A";
+//     }
+
+//     // Update the button text content with averagePotential
+//     $(this).text(`${buttonText}`);
+
+
+//     // Assuming you want to show the result in an alert, you can modify this part
+//     // alert(`Employee ID: ${employeeId}\nAverage Potential: ${buttonText}`);
+// });
+
+
+
+
+// Add event listener using event delegation
+// $('#example').on('click', '.viewOverallPerformance', function() {
+//     var employeeId = $(this).data('employee-id');
+//     var averagePerformance = parseFloat($(this).data('average-performance'));
+
+//     let buttonText;
+//     if (averagePerformance >= 0 && averagePerformance <= 1) {
+//         buttonText = "Low";
+//     } else if (averagePerformance > 1 && averagePerformance <= 2) {
+//         buttonText = "Medium";
+//     } else if (averagePerformance > 2 && averagePerformance <= 3) {
+//         buttonText = "High";
+//     } else {
+//         buttonText = "N/A";
+//     }
+
+//     // Update the button text content with averagePerformance
+//     $(this).text(`${buttonText}`);
+
+
+//     // Assuming you want to show the result in an alert, you can modify this part
+//     // alert(`Employee ID: ${employeeId}\nAverage Potential: ${buttonText}`);
+// });
+
+
+
+// Add event listener using event delegation
+$('#example').on('click', '.viewEmpMatrics', function() {
+    var employeeId = $(this).data('employee-id');
+    var potPer = $(this).data('pot-per');
+    console.log(potPer)
+    // var averagepotPer = parseFloat($(this).data('average-potPer'));
+
+    window.location.href = `/employee/renderMatrix?potPer=${potPer}`
+});
+
+
+
+
+
+
+// Add event listener using event delegation
+$('#example').on('click', '.viewUneditable', function() {
+    var employeeId = $(this).data('employee-id');
+    // var potPer = $(this).data('pot-per');
+    // console.log(potPer)
+    // var averagepotPer = parseFloat($(this).data('average-potPer'));
+
+    window.location.href = `/employee/renderUnEdited/?employeeId=${employeeId}`;
+});
+
+
+
+
+
+
+
+         // Add event listener using event delegation
+         $('#example').on('click', '.viewEmpData', function() {
+                var employeeId = $(this).attr('data-employee-id');
+
+                console.log("employeeId", employeeId);
+                
+                // Navigate to the new page only if data is fetched successfully
+                const url = `/employee/renderTalentTracker/?employeeId=${employeeId}`;
+                window.location.href = url;
+            });
+
+
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+        });
+}
+
+
+
+
+
+// potential
+
+// document.querySelectorAll('.viewOverallPotential').forEach(button => {
+//     button.addEventListener('click', function() {
+//       // Retrieve the averagePotential from the data attribute
+//       const averagePotential = parseFloat(this.dataset.averagePotential);
+      
+//       // Determine the text content based on the averagePotential value
+//       let buttonText;
+//       if (averagePotential >= 0 && averagePotential <= 1) {
+//         buttonText = "Low";
+//       } else if (averagePotential > 1 && averagePotential <= 2) {
+//         buttonText = "Medium";
+//       } else if (averagePotential > 2 && averagePotential <= 3) {
+//         buttonText = "High";
+//       } else {
+//         buttonText = "N/A";
+//       }
+
+//       // Set the button text content
+//       this.textContent = buttonText;
+//     });
+//   });
+
+
+
+
+document.querySelectorAll('.viewOverallPotential').forEach(button => {
+  button.addEventListener('click', function() {
+    const averagePotential = parseFloat(this.dataset.averagePotential);
+
+    let buttonText;
+    if (averagePotential >= 0 && averagePotential <= 1) {
+      buttonText = "Low";
+    } else if (averagePotential > 1 && averagePotential <= 2) {
+      buttonText = "Medium";
+    } else if (averagePotential > 2 && averagePotential <= 3) {
+      buttonText = "High";
+    } else {
+      buttonText = "N/A";
+    }
+
+    this.textContent = buttonText;
+  });
+});
+
+
+
+
+
+// function applyHomeContent() {
+//     // Set content for the "Home" button
+//     var newElement = document.getElementById("new");
+//     newElement.innerHTML = `
+//         <table id="example" class="table table-striped" style="width:100%">
+//             <thead>
+//                 <tr>
+//                     <th>S.no</th>
+//                     <th>External ID</th>
+//                     <th>Employee Name</th> 
+//                     <th>Department</th>
+//                     <th>Views</th>
+//                 </tr>
+//             </thead>
+//             <tbody id="employeeTableBody">
+//             </tbody>
+//         </table>
+//     `;
+//     newElement.className = ""; // Reset class
+
+//     // Fetch data from the server and update the DataTable
+//     fetch('/employee/tableData')
+//         .then(response => response.json())
+//         .then(data => {
+//             // Clear existing rows
+//             $('#employeeTableBody').empty();
+
+//             // Counter for serial number
+//             let serialNumber = 0;
+
+//             // Add new rows to the DataTable
+//             data.slice(1).forEach(employee => {
+//                 serialNumber++;
+//                 $('#employeeTableBody').append(`
+//                     <tr>
+//                         <td>${serialNumber}</td>
+//                         <td>${employee.external_id}</td>
+//                         <td>${employee.employee_name}</td>
+//                         <td>${employee.department}</td>
+//                         <td><button class="viewEmpData btn btn-primary" data-employee-id="${employee.external_id}">View</button></td>
+//                     </tr>
+//                 `);
+//             });
+
+//             // Initialize or redraw the DataTable
+//             $('#example').DataTable().destroy();
+//             $('#example').DataTable();
+
+//             // Add event listeners for each "View" button
+//             const viewButtons = document.querySelectorAll('.viewEmpData');
+//             viewButtons.forEach(button => {
+//                 button.addEventListener('click', function () {
+//                     const employeeId = button.dataset.employeeId;
+//                     // Call function to render employee details
+//                     renderEmployeeDetails(employeeId);
+//                 });
+//             });
+//         })
+//         .catch(error => {
+//             console.error('Error fetching data:', error);
+//         });
+// }
+
+
+
+// function renderEmployeeDetails(employeeId) {
+//     // Fetch employee details for the given ID
+//     fetch(`/employee/renderTalentTracker/?employeeId=${employeeId}`)
+//         .then(response => response.text())
+//         .then(html => {
+//             // Set the employee details in the main content area
+//             var newElement = document.getElementById("new");
+//             newElement.innerHTML = html;
+//         })
+//         .catch(error => {
+//             console.error('Error fetching employee details:', error);
+//         });
+// }
+
+
+
+
+
+
+
+function logout() {
+          fetch("/employee/logout", {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              console.log("Server response:", data);
+              if (data.error) {
+                console.error("Logout error:", data.error);
+              } else {
+                // Redirect to the login page
+                console.log("logout response", data);
+                window.location = "/employee/renderLoginLatest";
+              }
+            })
+            .catch((error) => {
+              console.error("Error:", error.message);
+
+              // Handle errors here
+            });
+        }
+
+
+
+         // to download excel file
+        function downloadExcelFile() {
+          // Navigate to the download URL for the Excel file
+          window.location.href = "/employee/exportUser";
+        }
+
+
+
+
+        function applyRegisterContent() {
+            // Set content and apply custom style when the "Register" button is clicked
+            var newElement = document.getElementById("new");
+            newElement.innerHTML = `
+                <div id="one" class="container mt-4  register-style ">
+                    <div class="row justify-content-center ">
+                        <div class="col-md-6 ">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h2 class="card-title text-center">Upload Excel File</h2>
+                                    <form id="uploadForm" action="/upload" method="post class="text-center" enctype="multipart/form-data>
+                                        <div class="mb-3">
+                                            <label for="excelFile" class="form-label">Choose Excel File</label>
+                                            <input type="file" class="form-control" id="excelFile" name="file" accept=".xls, .xlsx, .csv" required>
+                                        </div>
+                                      <div class="text-center my-3 margin-top">
+                                        <button type="button" class="btn btn-primary fa-align-center" onclick="uploadFile()" style="align-items:center" > Upload</button>
+                                      </div>
+                                    </form>
+                                </div>
+                                
+
+                              <div class="text-center">
+                                <button type="button"  class="btn btn-success mt-5" onclick="dummyExcel()" > Excel Format</button>
+                                <p class="text-warning"><i class="bi bi-info-circle"></i> Please download excel format from here  <i class="bi bi-arrow-90deg-left"></i></p>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `
+            newElement.className = "register-style"; // Apply custom class
+        }
+
+
+        function dummyExcel(){
+          window.location.href = "/employee/dummyExcel";
+
+        }
+
+        async function uploadFile() {
+            const form = document.getElementById('uploadForm');
+            const formData = new FormData(form);
+
+            try {
+                const response = await fetch('/employee/importuser', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                if (response.ok) {
+                    const filePath = await response.text();
+                    alert(`File uploaded to: ${filePath}`);
+                } else {
+                    alert('File upload failed');
+                }
+            } catch (error) {
+                console.error('Error:', error.message);
+            }
+        }
+        $(document).ready(function () {
+$('#dtBasicExample').DataTable();
+$('.dataTables_length').addClass('bs-select');
+});
+
+
+
+// download excel file
+function downloadExcelFile() {
+          // Navigate to the download URL for the Excel file
+          window.location.href = "/employee/exportUser";
+        }
+
+
+
+
+     
+       
+    </script>
+   
+   
+</body>
+</html>

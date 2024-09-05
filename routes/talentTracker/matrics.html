@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Matrix - Large Textareas</title>
+  <style>
+    .matrix {
+      display: grid;
+      grid-template-columns: auto auto auto;
+      /* margin-left: 60px; */
+      height: 94vh;
+    }
+    .matrix textarea {
+      border: 1px solid black;
+     
+      resize: none;
+      width:auto;
+
+    }
+  </style>
+</head>
+<body>
+
+<div class="matrix">
+  <textarea rows="5" cols="15" id="first"> Low Performance and High Potential
+    Meaning:
+    The employee may have significant potential for growth and advancement within the organization, but their performance is currently not meeting expectations.
+    Action:
+    Provide coaching, mentoring, or training to help the employee improve their performance, identify barriers to success, and assess readiness for promotion.
+            </textarea>
+  <textarea rows="5" cols="15" id="eigth">            Medium Performance and High Potential
+
+    Meaning:
+    The employee has potential for growth and advancement within the organization, but may need additional support or development to reach their potential.
+    Action:
+    Identify development needs and provide coaching, mentoring, or training to help the employee improve their performance and readiness for promotion.
+            </textarea>
+  <textarea rows="5" cols="15" id="ninth">            High Performance and High Potential
+
+    Meaning:
+    The employee is a top performer with potential for growth and advancement within the organization.
+    Action:
+    Provide opportunities for development and advancement to retain and leverage the employee's skills and abilities.
+            </textarea>
+  <textarea rows="5" cols="15"  id="fourth" >Low Performance and Medium Potential
+
+    Meaning:
+    The employee may have some potential for growth and advancement within the organization, but their performance is currently not meeting expectations.
+    Action:
+    Provide coaching, mentoring, or training to help the employee improve their performance, identify development needs, and assess readiness for promotion or
+            </textarea>
+  <textarea rows="5" cols="15" id="fifth" >            Medium Performance and Medium Potential
+
+    Meaning:
+    The employee is performing adequately in their current role and may have some potential for growth and advancement within the organization.
+    Action:
+    Provide feedback and support for development, assess readiness for promotion, and consider factors such as experience, skills, and organizational needs.
+            </textarea>
+  <textarea rows="5" cols="15" id="sixth">            High Performance and Medium Potential
+
+    Meaning:
+    The employee is a top performer who may have some potential for growth and advancement within the organization, but may not be ready for immediate promotion.
+    Action:
+    Provide opportunities for development and assess the employee's readiness for promotion, considering factors such as experience, leadership potential, and organizational needs.
+            </textarea>
+  <textarea rows="5" cols="15" id="first">   Low Performance and Low Potential
+
+    Meaning:
+    The employee is a poor performer who is not likely to develop the skills or abilities necessary for advancement in the organization.
+    Action:Consider remedial training or a performance improvement plan, but also be prepared to terminate or demote the employee if necessary.</textarea>
+
+  <textarea rows="5" cols="15" id="second"> Medium Performance and Low Potential
+
+    Meaning:
+    The employee is performing adequately in their current role, but may not have significant potential for growth and advancement within the organization beyond their current role.
+    Action:
+    Provide opportunities for professional growth and development within the current role, consider offering lateral moves, or prepare for succession planning.
+       </textarea>
+  <textarea rows="5" cols="15" id="third">            High Performance and Low Potential
+
+    Meaning:
+    The employee is a top performer who may not have significant potential for growth and advancement within the organization beyond their current role.
+    Action:
+    Provide opportunities for professional growth and development within the current role, consider offering lateral moves, or prepare for succession planning.
+            </textarea>
+</div>
+
+
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var currentUrl = new URL(window.location.href);
+
+    console.log("currentUrl", currentUrl);
+
+    var potPer = currentUrl.searchParams.get("potPer");
+    console.log(typeof potPer);
+
+    console.log("potPer", potPer);
+
+    if (potPer == "1_1") {
+      const first = document.getElementById("first");
+      first.style.backgroundColor = "green";
+    } else if (potPer == "1_2") {
+      const second = document.getElementById("second");
+      second.style.backgroundColor = "green";
+    } else if (potPer == "1_3") {
+      const third = document.getElementById("third");
+      third.style.backgroundColor = "green";
+    } else if (potPer == "2_1") {
+      const fourth = document.getElementById("fourth");
+      fourth.style.backgroundColor = "green";
+    } else if (potPer == "2_2") {
+      const fifth = document.getElementById("fifth");
+      fifth.style.backgroundColor = "green";
+    } else if (potPer == "2_3") {
+      const sixth = document.getElementById("sixth");
+      sixth.style.backgroundColor = "green";
+    } else if (potPer == "3_1") {
+      const seventh = document.getElementById("seventh");
+      seventh.style.backgroundColor = "green";
+    } else if (potPer == "3_2") {
+      const eigth = document.getElementById("eigth");
+      eigth.style.backgroundColor = "green";
+    } else if (potPer == "3_3") {
+      const ninth = document.getElementById("ninth");
+      ninth.style.backgroundColor = "green";
+    }
+  });
+</script>
+
+
+</body>
+</html>

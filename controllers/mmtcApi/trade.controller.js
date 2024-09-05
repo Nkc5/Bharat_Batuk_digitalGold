@@ -13,13 +13,185 @@ class tradeMmtc {
 
 
 
+  
+static vpaValidate = async(req, res)=>{
+
+  const session = await securityMmtc.login(req, res);
+
+  var {vpaId} = req;
+
+  console.log("req", req)
+  try {
+      
+  
+      var response = await axios.post('https://cemuat.mmtcpamp.com/pvt/checkValidateVpaId', {vpaId},
+      {
+          headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+              'Cookie': `sessionId=${session.sessionId}`
+            }
+      })
+  
+      console.log("response mmtc", response)
+      console.log("response mmtc data", response.data)
+
+      return response.data;
+
+  
+  } catch (error) {
+    console.log(error);
+    throw new Error(JSON.stringify(error));
+  }
+  
+  
+  
+  }
+       
+  
+
+
+
+  
+  // buy invoice pdf
+  
+static generateBuyPdfInvoice = async(req, res)=>{
+
+  const session = await securityMmtc.login(req, res);
+
+  const {transactionId} = req;
+
+  console.log("req", req)
+  
+  try {
+      
+  
+      var response = await axios.post('https://cemuat.mmtcpamp.com/pvt/generateBuyPdfInvoice', {transactionId},
+      {
+          headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+              'Cookie': `sessionId=${session.sessionId}`
+            }
+      })
+  
+    
+
+      return response.data;
+
+  
+  } catch (error) {
+    console.log(error);
+    throw new Error(JSON.stringify(error));
+  }
+  
+  
+  
+  }
+   
+
+
+
+
+
+
+
+  // sell invoice pdf
+  
+static generateSellPdfInvoice = async(req, res)=>{
+
+  const session = await securityMmtc.login(req, res);
+
+  const {transactionId} = req;
+
+  console.log("req", req)
+
+  try {
+      
+  
+      const response = await axios.post( 'https://cemuat.mmtcpamp.com/pvt/generateSellPdfInvoice', {transactionId},
+      {
+          headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+              'Cookie': `sessionId=${session.sessionId}`
+            }
+      })
+  
+    
+      return response.data;
+
+  
+  } catch (error) {
+    console.log(error);
+    throw new Error(JSON.stringify(error));
+  }
+  
+  
+  
+  }
+   
+
+
+  
+
+  // sell invoice pdf
+  
+static generateRedeemPdfInvoice = async(req, res)=>{
+
+  const session = await securityMmtc.login(req, res);
+
+  const {transactionId} = req;
+
+  console.log("req", req)
+
+  try {
+      
+  
+      const response = await axios.post( 'https://cemuat.mmtcpamp.com/pvt/generateRedeemPdfInvoice', {transactionId},
+      {
+          headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+              'Cookie': `sessionId=${session.sessionId}`
+            }
+      })
+  
+    
+      return response.data;
+
+  
+  } catch (error) {
+    console.log(error);
+    throw new Error(JSON.stringify(error));
+  }
+  
+  
+  
+  }
+   
+
+
+
+
   //getNonExecutableQuote
   static getNonExecutableQuote = async (req, res) => {
 
-    const { currencyPair, type } = req;
+    var { currencyPair, type } = req;
+
+    // console.log("req", req)
+
+    if(!currencyPair || !type){
+      return res.status(400).json({
+        error: true,
+        message: 'Mandatory parameters missing',
+        data: []
+      })
+    }
+
 
     try {
-      const response = await axios.post(`${baseUrl}/pvt/getNonExecutableQuote`, {
+      var response = await axios.post(`${baseUrl}/pvt/getNonExecutableQuote`, {
         currencyPair,
         type
       }, {
@@ -45,16 +217,24 @@ class tradeMmtc {
 
     const session = await securityMmtc.login(req, res);
 
+    var {currencyPair, value, type, transactionRefNo, customerRefNo} = req;
+    console.log("getQuoteBuy req:", req);
 
-    // const input = req.body;
+    if(!currencyPair || !value || !type || !transactionRefNo  || !customerRefNo){
+      return res.status(400).json({
+        error: true,
+        message: 'Mandatory parameters missing',
+        data: []
+      })
+    }
 
-    const input2 = req;
+    var input2 = req;
 
     // const data = {customerRefNo, currencyPair, transactionRefNo, value, type}
 
     //return input2;
     try {
-      const response = await axios.post(`${baseUrl}/trade/getQuoteBuy`, input2, {
+      var response = await axios.post(`${baseUrl}/trade/getQuoteBuy`, input2, {
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -81,18 +261,18 @@ class tradeMmtc {
 
     const session = await securityMmtc.login(req, res);
 
-    const { customerRefNo, calculationType, preTaxAmount, quantity, quoteId, tax1Amt, tax2Amt, transactionDate, transactionOrderID, totalAmount } = req;
+    var { customerRefNo, calculationType, preTaxAmount, quantity, quoteId, tax1Amt, tax2Amt, transactionDate, transactionOrderID, totalAmount } = req;
 
 
-    const data2 = req;
+    var data2 = req;
 
     console.log("data2", data2)
 
     if (!customerRefNo || !calculationType || !preTaxAmount || !quantity || !quoteId || !tax1Amt || !tax2Amt || !transactionDate || !transactionOrderID || !totalAmount) {
-      return res.json({
+      return res.status(400).json({
         error: true,
         message: 'Mandatory parameters missing',
-        data: null
+        data: []
       })
     
     }
@@ -100,7 +280,7 @@ class tradeMmtc {
 
     //  cURL request to MMTC
     try {
-      const response = await axios.post(`${baseUrl}/trade/validateQuotePartnerPg`, data2, {
+      var response = await axios.post(`${baseUrl}/trade/validateQuotePartnerPg`, data2, {
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -129,13 +309,23 @@ class tradeMmtc {
 
     const session = await securityMmtc.login(req, res);
 
-    const { customerRefNo, calculationType, billingAddressId, preTaxAmount, quantity, quoteId, tax1Amt, tax2Amt, transactionDate, transactionOrderID, totalAmount } = req;
-    const data = req;
+    var { customerRefNo, calculationType, billingAddressId, preTaxAmount, quantity, quoteId, tax1Amt, tax2Amt, transactionDate, transactionOrderID, totalAmount } = req;
+
+    if (!customerRefNo || !calculationType || !billingAddressId || !preTaxAmount || !quantity || !quoteId || !tax1Amt || !tax2Amt || !transactionDate || !transactionOrderID || !totalAmount) {
+      return res.status(400).json({
+        error: true,
+        message: 'Mandatory parameters missing',
+        data: []
+      })
+    
+    }
+
+    var data = req;
 
 
     //  cURL request to MMTC
     try {
-      const response = await axios.post(`${baseUrl}/trade/executeOrderPartnerPg`, data, {
+      var response = await axios.post(`${baseUrl}/trade/executeOrderPartnerPg`, data, {
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -146,10 +336,105 @@ class tradeMmtc {
 
       return response.data;
     } catch (error) {
-      console.log(error.response.data);
+      console.log("executeOrderPartnerPg",error.response.data);
       throw new Error(JSON.stringify(error.response.data));
     }
   }
+
+
+
+
+  
+  //  validateQuotePartnerPg
+  static validateOrderAndExecute = async (req, res) => {
+
+    const session = await securityMmtc.login(req, res);
+
+    var { customerRefNo,billingAddressId, calculationType, preTaxAmount, quantity, quoteId, tax1Amt, tax2Amt, transactionDate, transactionOrderID, totalAmount } = req;
+
+
+    var data2 = req;
+
+    console.log("data2", data2)
+
+    if (!customerRefNo || !calculationType || !billingAddressId || !preTaxAmount || !quantity || !quoteId || !tax1Amt || !tax2Amt || !transactionDate || !transactionOrderID || !totalAmount) {
+      return res.status(400).json({
+        error: true,
+        message: 'Mandatory parameters missing',
+        data: []
+      })
+    
+    }
+        
+
+    //  cURL request to MMTC
+    try {
+      var response = await axios.post(`${baseUrl}/trade/validateOrderAndExecute`, data2, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Cookie': `sessionId=${session.sessionId}`
+        },
+
+      }
+      )
+
+      // res.json(response.data);
+
+      return response.data;
+
+    } catch (error) {
+      console.log(error.response.data);
+      throw new Error(JSON.stringify(error.response.data));
+    }
+
+
+  }
+
+
+
+
+  
+
+  //  executeOrderPartnerPg
+  static executeOrderWithPayIn = async (req, res) => {
+
+    const session = await securityMmtc.login(req, res);
+
+    var { calculationType, payIn, transactionDate, preTaxAmount, quantity, quoteId, tax1Amt, tax2Amt, totalAmount, billingAddressId, customerRefNo, transactionOrderID, rezorpayTid } = req;
+
+    // if (!customerRefNo || !calculationType || !billingAddressId || !preTaxAmount || !quantity || !quoteId || !tax1Amt || !tax2Amt || !transactionDate || !transactionOrderID || !totalAmount) {
+    //   return res.status(400).json({
+    //     error: true,
+    //     message: 'Mandatory parameters missing',
+    //     data: []
+    //   })
+    
+    // }
+
+    var data = req;
+
+    console.log("req", req)
+
+
+    //  cURL request to MMTC
+    try {
+      var response = await axios.post(`${baseUrl}/trade/executeOrderWithPayIn`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Cookie': `sessionId=${session.sessionId}`
+        },
+      }
+      );
+
+      return response.data;
+    } catch (error) {
+      console.log("executeOrderWithPayIn",error.response.data);
+      throw new Error(JSON.stringify(error.response.data));
+    }
+  }
+
 
 
 
@@ -159,7 +444,7 @@ class tradeMmtc {
   static getQuoteSell = async (req, res) => {
     const session = await securityMmtc.login(req, res);
 
-    const {
+    var {
       customerRefNo,
       currencyPair,
       transactionRefNo,
@@ -167,15 +452,19 @@ class tradeMmtc {
       type
     } = req;
 
-    const data = req;
+    var data = req;
 
-    if (!customerRefNo || !currencyPair || !transactionRefNo) {
-      return res.status(400).json({ error: 'Mandatory parameters missing' });
+    if (!customerRefNo || !currencyPair || !transactionRefNo || !value || !type) {
+      return res.status(400).json({
+        error: true,
+        message: 'Mandatory parameters missing',
+        data: []
+      })
     }
 
     //  cURL request to MMTC
     try {
-      const response = await axios.post(`${baseUrl}/trade/getQuoteSell`, data, {
+      var response = await axios.post(`${baseUrl}/trade/getQuoteSell`, data, {
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -200,20 +489,24 @@ class tradeMmtc {
   static executeOrderWithPayOut = async (req, res) => {
     const session = await securityMmtc.login(req, res);
 
-    const { calculationType, customerRefNo, otp, payOut, paymentChannel, preTaxAmount, quantity, quoteId, tax1Amt, tax2Amt, transactionDate, transactionOrderID, totalAmount } = req;
+    var { calculationType, customerRefNo, otp, payOut, paymentChannel, preTaxAmount, quantity, quoteId, tax1Amt, tax2Amt, transactionDate, transactionOrderID, totalAmount } = req;
 
 
-    const data = req;
+    var data = req;
     console.log(data);
 
 
-    if (!customerRefNo || !transactionOrderID) {
-      return res.status(400).json({ error: 'Mandatory parameters missing' });
+    if (!calculationType || !customerRefNo  || !preTaxAmount || !quantity || !quoteId || !tax1Amt || !tax2Amt || !transactionDate || !transactionOrderID || !totalAmount) {
+      return res.status(400).json({
+        error: true,
+        message: 'Mandatory parameters missing',
+        data: []
+      })
     }
 
     //  cURL request to MMTC
     try {
-      const response = await axios.post(`${baseUrl}/trade/executeOrderWithPayOut`, data, {
+      var response = await axios.post(`${baseUrl}/trade/executeOrderWithPayOut`, data, {
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -236,15 +529,17 @@ class tradeMmtc {
   //initiateTransfer
   static initiateTransfer = async (req, res) => {
     const session = await securityMmtc.login(req, res);
-    const { currencyPair, dstCustomerRefNo, dstMobileNumber, email, name, srcCustomerRefNo, isKycRequired, channel, transactionOrderID, transactionDate,
-      quantity
-    } = req;
+    const { currencyPair, dstCustomerRefNo, dstMobileNumber, email, name, srcCustomerRefNo, isKycRequired, channel, transactionOrderID, transactionDate,quantity } = req;
 
-    console.log("req", req )
+    // console.log("req", req )
 
     if (!currencyPair || !dstCustomerRefNo || !dstMobileNumber || !email || !name || !srcCustomerRefNo
        || !channel || !transactionOrderID || !transactionDate || !quantity) {
-      return res.status(400).json({ error: 'Mandatory parameters missing' });
+        return res.status(400).json({
+          error: true,
+          message: 'Mandatory parameters missing',
+          data: []
+        })
     }
 
     try {
@@ -276,9 +571,14 @@ class tradeMmtc {
     const session = await securityMmtc.login(req, res);
     const { transferId, dstCustomerRefNo, currencyPair, transactionDate } = req;
 
+    // console.log("req", req)
 
     if (!transferId || !dstCustomerRefNo || !currencyPair || !transactionDate) {
-      return res.status(400).json({ error: 'Mandatory parameters missing' });
+      return res.status(400).json({
+        error: true,
+        message: 'Mandatory parameters missing',
+        data: []
+      })
     }
 
 
@@ -315,18 +615,17 @@ class tradeMmtc {
 
     const session = await securityMmtc.login(req, res);
 
-
-    // const {channel, currencyPair, dstCustomerRefNo, quantity, srcCustomerRefNo, transactionDate, transactionOrderID, message
-    // } = req.body;
-    //const data = req.body;
-
     const { channel, currencyPair, dstCustomerRefNo, quantity, srcCustomerRefNo, transactionDate, transactionOrderID, message
     } = req;
 
     const data = req;
 
     if (!channel || !currencyPair || !dstCustomerRefNo || !quantity || !srcCustomerRefNo || !transactionDate || !transactionOrderID) {
-      return res.status(400).json({ error: 'Mandatory parameters missing' });
+      return res.status(400).json({
+        error: true,
+        message: 'Mandatory parameters missing',
+        data: []
+      })
     }
 
     //  cURL request to MMTC
@@ -360,7 +659,11 @@ class tradeMmtc {
     } = req;
     // console.log(req.body);
     if (!orderId) {
-      return res.status(400).json({ error: 'Mandatory parameters missing' });
+      return res.status(400).json({
+        error: true,
+        message: 'Mandatory parameters missing',
+        data: []
+      })
     }
     // console.log(orderId)
     //  cURL request to MMTC
@@ -394,7 +697,11 @@ class tradeMmtc {
     } = req;
 
     if (!transactionId || !type) {
-      return res.status(400).json({ error: 'Mandatory parameters missing' });
+      return res.status(400).json({
+        error: true,
+        message: 'Mandatory parameters missing',
+        data: []
+      })
     }
 
     //  cURL request to MMTC
@@ -412,7 +719,7 @@ class tradeMmtc {
 
       return response.data;
     } catch (error) {
-      console.log(error.response.data);
+      console.log("getOrderDetails",error.response.data);
       throw new Error(JSON.stringify(error.response.data));
 
     }
@@ -428,7 +735,11 @@ class tradeMmtc {
     } = req;
 
     if (!clientOrderID || !customerRefNo) {
-      return res.status(400).json({ error: 'Mandatory parameters missing' });
+      return res.status(400).json({
+        error: true,
+        message: 'Mandatory parameters missing',
+        data: []
+      })
     }
 
 
@@ -462,7 +773,11 @@ class tradeMmtc {
     const { customerRefNo, endDate, startDate } = req;
 
     if (!customerRefNo || !endDate || !startDate) {
-      return res.status(400).json({ error: 'Mandatory parameters missing' });
+      return res.status(400).json({
+        error: true,
+        message: 'Mandatory parameters missing',
+        data: []
+      })
     }
 
     //  cURL request to MMTC
@@ -482,7 +797,7 @@ class tradeMmtc {
 
       return response.data;
     } catch (error) {
-      console.log(error.response.data);
+      console.log("getRedeemHistory",error.response.data);
       throw new Error(JSON.stringify(error.response.data));
     }
   }
@@ -497,12 +812,17 @@ class tradeMmtc {
       startDate
 
     } = req;
-    console.log(customerRefNo)
-    console.log(endDate)
-    console.log(startDate)
+
+    console.log("req", req)
+
+   
 
     if (!customerRefNo || !endDate || !startDate) {
-      return res.status(400).json({ error: 'Mandatory parameters missing' });
+      return res.status(400).json({
+        error: true,
+        message: 'Mandatory parameters missing',
+        data: []
+      })
     }
 
     //  cURL request to MMTC
@@ -520,9 +840,11 @@ class tradeMmtc {
         }
       });
 
+      console.log("mmtcresponse", response.data);
+
       return response.data;
     } catch (error) {
-      console.log(error.response.data);
+      console.log("getOrderHistory",error.response.data);
       throw new Error(JSON.stringify(error.response.data));
     }
   }
@@ -534,12 +856,16 @@ class tradeMmtc {
     const { buyCustomerRefNo, channel, currencyPair, transactionDate, transactionOrderID, transferCustomerRefNo, quantity, amount, message, billingAddressId } = req;
 
     const data = req;
-    console.log(data)
+    // console.log(data)
 
 
     if (!buyCustomerRefNo || !channel || !currencyPair || !transactionDate || !transactionOrderID || !transferCustomerRefNo
-      || !quantity || !amount || !message || !billingAddressId) {
-      return res.status(400).json({ error: 'Mandatory parameters missing' });
+      || !quantity || !amount || !billingAddressId) {
+        return res.status(400).json({
+          error: true,
+          message: 'Mandatory parameters missing',
+          data: []
+        })
     }
 
     //  cURL request to MMTC
@@ -561,6 +887,144 @@ class tradeMmtc {
 
     }
   }
+
+
+
+
+
+
+
+
+  /*                    Redeem API    */
+
+  
+
+  //getNonExecutableQuote
+  static getRedemptionCatalog = async (req, res) => {
+
+    var session = await securityMmtc.login(req, res);
+   
+
+
+    try {
+      var response = await axios.post(`${baseUrl}/redeem/getRedemptionCatalog`, null, {
+        headers: {
+         
+          'Accept': 'application/json',
+          'Cookie': `sessionId=${session.sessionId}`
+        }
+      });
+
+      console.log("response", response.data)
+
+      return response.data;
+
+    } catch (error) {
+      console.log(error.response.data);
+      throw new Error(JSON.stringify(error.response.data));
+    }
+
+  }
+
+
+
+
+
+
+  
+  //validateRedeemOrderForPartnerPg
+  static validateRedeemOrderForPartnerPg = async (req, res) => {
+
+    var session = await securityMmtc.login(req, res);
+    
+    var data = req;
+
+
+    try {
+      var response = await axios.post(`${baseUrl}/redeem/validateRedeemOrderForPartnerPg`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Cookie': `sessionId=${session.sessionId}`
+        }
+      });
+
+      console.log("response", response)
+
+      return response.data;
+
+    } catch (error) {
+      console.log(error.response.data);
+      throw new Error(JSON.stringify(error.response.data));
+    }
+
+  }
+
+
+
+
+
+
+    
+  ///executeRedeemOrderForPartnerPg
+  static executeRedeemOrderForPartnerPg = async (req, res) => {
+
+    var session = await securityMmtc.login(req, res);
+    
+    var data = req;
+
+
+    try {
+      var response = await axios.post(`${baseUrl}/redeem/executeRedeemOrderForPartnerPg`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Cookie': `sessionId=${session.sessionId}`
+        }
+      });
+
+      console.log("response", response)
+
+      return response.data;
+
+    } catch (error) {
+      console.log(error.response.data);
+      throw new Error(JSON.stringify(error.response.data));
+    }
+
+  }
+
+
+
+
+
+
+  //validateRedeemOrderForPartnerPg
+  static validateRedeemMMTC = async (req, res, data) => {
+
+    console.log("data", data);
+
+    var session = await securityMmtc.login(req, res);
+    
+    try {
+      var response = await axios.post(`${baseUrl}/redeem/validateRedeemOrderForPartnerPg`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Cookie': `sessionId=${session.sessionId}`
+        }
+      });
+
+      return response.data;
+
+    } catch (error) {
+      console.log(error.response.data);
+      throw new Error(error.response.data.reason);
+    }
+
+  }
+
+
 
 
 
